@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:700&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: url('bb.jpg') no-repeat center center fixed;
+  background-size: cover;   /* makes background fill the screen properly */
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+}
+
+/* NAVBAR */
+.navbar {
+  height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;   
+  right: 0;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 50px;
+  z-index: 1000;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+}
+
+.navbar .logo {
+  width: 90px;
+  height: auto;
+  cursor: pointer;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  align-items: center;       /* vertically center links */
+}
+
+
+.navbar ul li {
+  margin: 0 12px;
+}
+
+.navbar ul li a {
+  font-size: 18px;
+  font-weight: 500;
+  color: white;
+  padding: 8px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar ul li a.active,
+.navbar ul li a:hover {
+  background: red;
+  color: #fff;
+}
+
+/* Center Content */
+.wrapper .center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  user-select: none;
+}
+
+.center h1 {
+  color: black;
+  font-size: 60px;
+  font-weight: bold;
+  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.7);
+}
+
+.center h2 {
+  color: white;
+  font-size: 50px;
+  font-weight: bold;
+  margin-top: 20px;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Buttons */
+.center .buttons {
+  margin-top: 40px;
+}
+
+.buttons button {
+  height: 50px;
+  width: 160px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  background: red;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+.buttons .btn2 {
+  margin-left: 25px;
+}
+
+.buttons button:hover {
+  background: #cc0000;
+  transform: scale(1.05);
+}

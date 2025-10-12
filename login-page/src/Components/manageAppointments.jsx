@@ -1,0 +1,103 @@
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../css/book.css";
+import { Button } from "react-bootstrap";
+
+const AppointmentPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { doctorName } = location.state || {};
+
+  const [appointments, setAppointments] = useState([]);
+
+  // Fetch all appointments
+  useEffect(() => {
+    axios
+      .get("http://localhost:8082/rest-app/appointments")
+      .then((response) => {
+        setAppointments(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching appointments:", error);
+        alert("Error fetching appointments. Please try again.");
+      });
+  }, []);
+
+  // Cancel appointment
+  const handleCancelAppointment = async (appointmentId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8082/rest-app/appointments/${appointmentId}`
+      );
+      setAppointments(
+        appointments.filter(
+          (appointment) => appointment.appointmentId !== appointmentId
+        )
+      );
+      alert("Appointment cancelled successfully!");
+    } catch (error) {
+      console.error("Error cancelling appointment:", error);
+      alert("Error cancelling appointment. Please try again.");
+    }
+  };
+
+  return (
+    <div className="appointment-wrapper">
+      <div className="appointment-card">
+        <div className="appointment-header">
+          <h2>Appointments for Dr. {doctorName}</h2>
+        </div>
+
+        <div className="button-container">
+          <Button
+            variant="outline-primary"
+            onClick={() => navigate("/DoctorView")}
+          >
+            Book Appointments
+          </Button>
+        </div>
+
+        <h3 className="table-title">All Appointments</h3>
+        <table className="appointment-table">
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+              <th>Doctor Name</th>
+              <th>Speciality</th>
+              <th>Contact Number</th>
+              <th>Appointment Date</th>
+              <th>Doctor Charge (LKR)</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments.map((appointment) => (
+              <tr key={appointment.appointmentId}>
+                <td>{appointment.patientName}</td>
+                <td>{appointment.doctorName}</td>
+                <td>{appointment.speciality}</td>
+                <td>{appointment.contactNumber}</td>
+                <td>{appointment.appointmentDate}</td>
+                <td>{appointment.doctorFee}</td>
+                <td>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() =>
+                      handleCancelAppointment(appointment.appointmentId)
+                    }
+                    size="sm"
+                  >
+                    Cancel
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default AppointmentPage;

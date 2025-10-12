@@ -1,0 +1,150 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    text-align: center;
+}
+
+/* Navbar */
+.navbar {
+    height: 100px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0 50px;
+    z-index: 1000;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
+}
+
+.navbar .logo {
+    height: 80px;
+    width: auto;
+    cursor: pointer;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.navbar ul li {
+    margin: 0 12px;
+}
+
+.navbar ul li a {
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar ul li a.active,
+.navbar ul li a:hover {
+    background: red;
+    color: #fff;
+}
+
+/* Page Title */
+h2 {
+    padding-top: 140px;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 32px;
+}
+
+/* Cards Container */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+/* Single Doctor Card */
+.doctor-card {
+    background: lch(100% 0.01 296.81 / 0.904);
+    width: 340px;
+    min-height: 420px;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.doctor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.doctor-card h3 {
+    margin: 15px 0;
+    color: #007bff;
+    font-size: 22px;
+}
+
+.doctor-card p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center icon with text */
+    gap: 8px;
+}
+
+/* Icons */
+.doctor-icon {
+    font-size: 70px;  /* Bigger and centered */
+    color: #007bff;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-icon {
+    font-size: 18px;
+    color: #28a745;
+}
+
+/* Appointment Button (Blue) */
+.appointment-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background-color: #007bff;  /* Blue color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.appointment-btn:hover {
+    background-color: #0056b3;  /* Darker blue on hover */
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}

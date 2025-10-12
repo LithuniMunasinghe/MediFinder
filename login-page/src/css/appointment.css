@@ -1,0 +1,102 @@
+/* appointment.css - updated */
+
+/* make sizing predictable */
+* { box-sizing: border-box; }
+
+.appointment-wrapper {
+  width: 860px;
+  height: 75%;
+  margin: 60px auto;         /* space above/below the card */
+  padding: 30px 38px;        /* reduce inner spacing (top/bottom 30px instead of 300px) */  
+  background-color: #d81313;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  color: #000;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+
+
+/* Form: vertical stack, center the contents */
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;               /* vertical spacing between groups */
+  align-items: center;     /* horizontally center each .form-group */
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+/* Each form group is full width but constrained so form looks neat */
+.form-group {
+  width: 100%;
+  max-width: 560px;        /* controls the width of inputs and labels */
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;          /* ensures the group is centered inside the form */
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #000;
+  font-size: 0.95rem;
+}
+
+/* Inputs (all kinds) */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="tel"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #000;             /* input text black */
+  background-color: #fff;
+}
+
+/* Disabled inputs should still show black text and not be overly faded */
+input[disabled] {
+  color: #000;
+  background-color: #f7f7f7;
+  opacity: 1;              /* keep text readable */
+}
+
+/* Focus styling */
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.08);
+}
+
+/* Submit button - centered under fields */
+button.submit-btn {
+  padding: 12px 28px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #28a745;
+  color: #fff;             /* keep button text white for contrast */
+  align-self: center;      /* center the button */
+  margin-top: 6px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  transition: transform .08s ease, background-color .12s ease;
+}
+
+/* Hover state */
+button.submit-btn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+/* Small screens: make button full width and reduce padding */
+@media screen and (max-width: 600px) {
+  .appointment-wrapper { margin: 20px 12px; padding: 20px; }
+  .appointment-wrapper h2 { font-size: 1.5rem; }
+  .form-group { max-width: 100%; }
+  button.submit-btn { width: 100%; padding: 12px; }
+}
