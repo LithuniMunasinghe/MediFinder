@@ -79,24 +79,36 @@ body {
   padding: 0 1rem;
   padding-bottom: 150px; /* space for typing area */
   height: calc(100vh - 100px); /* adjust based on header + input area */
-  overflow-y: auto;
+  overflow-y: hidden;
   scroll-behavior: smooth;
 }
-/* Messages */
+/* Message Card Style */
 .message {
-  max-width: 70%;
-  word-wrap: break-word;
+  max-width: 75%;
+  padding: 12px 16px;
+  margin: 8px 0;
+  border-radius: 12px;
+  background: #ffffff; /* White card */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* Soft shadow */
   font-size: 1rem;
-  line-height: 1.5;
-  padding: 0.8rem 1rem;
+  line-height: 1.6;
+  transition: transform 0.2s ease;
 }
 
-/* User / AI alignment */
-.user {
-  align-self: flex-end;
+/* Slight lift effect on hover (optional, just for UI feel) */
+.message:hover {
+  transform: translateY(-2px);
 }
+
+/* Alignments */
 .Gemini {
   align-self: flex-start;
+  background: #ffffff; /* Keep white for AI */
+}
+
+.user {
+  align-self: flex-end;
+  background: #e6f7ff; /* Light blue for user messages (optional) */
 }
 
 .loading {
@@ -108,6 +120,33 @@ body {
   padding: 1rem;
   border-radius: 15px;
 }
+.medicine-card {
+  background-color: #fff;      /* White background */
+  border-radius: 12px;         /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Soft shadow */
+  padding: 15px 20px;          /* Inner spacing */
+  margin-bottom: 15px;         /* Space between cards */
+  max-width: 400px;            /* Optional: card width */
+}
+
+.medicine-card h3 {
+  margin: 0 0 10px 0;           /* Space below title */
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.medicine-card ul {
+  padding-left: 20px;           /* Indent bullets */
+  margin: 0;                    /* Remove extra margins */
+  list-style-type: disc;        /* Ensure bullets appear */
+}
+
+.medicine-card ul li {
+  margin-bottom: 5px;           /* Space between each bullet */
+  line-height: 1.4;             /* Make text closer to bullet */
+  color: #333;
+}
+
 
 /* Typing area - pinned to bottom */
 .typing-area {
@@ -129,10 +168,10 @@ body {
 
 .input-wrapper {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   flex: 1 1 300px;
   border: 1px solid var(--text-color);
-  padding: 0.5rem;
+  padding: 0.5rem 1.5rem;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -148,9 +187,21 @@ body {
 
 .input-wrapper input:focus {
   outline: none;
+  border-radius: 50%;
 }
-
-#send-message-button {
+.submitBtn {
+  border: none !important;
+  outline: none;
+  background: var(--secondary-color);
+  font-size: 1.4rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 50px;
+  cursor: pointer;
+}
+.submitBtn:hover {
+  background: var(--secondary-hover-color);
+}
+/* #send-message-button {
   border: none;
   background-color: #efefef;
   cursor: pointer;
@@ -160,7 +211,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 /* Theme Toggle */
 .theme-toggle {
