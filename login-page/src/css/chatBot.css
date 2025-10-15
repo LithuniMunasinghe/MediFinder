@@ -1,0 +1,250 @@
+/* ---------------------------
+   Global Styles
+--------------------------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+:root {
+  --text-color: #222;
+  --subheading-color: #a0a0a0;
+  --placeholder-color: #6c6c6c;
+
+  --primary-color: #fff;
+  --secondary-color: #e9eef6;
+  --secondary-hover-color: #dbe1ea;
+
+  --input-bg: #fff;
+  --chat-bg: #f1f1f1;
+  --chat-border: #dedede;
+
+  --output-bg: #ddd;
+  --output-border: #ccc;
+}
+
+/* Dark Theme */
+body.dark {
+  --text-color: #f1f1f1;
+  --subheading-color: #bbbbbb;
+  --placeholder-color: #999;
+
+  --primary-color: #121212;
+  --secondary-hover-color: #2a2a2a;
+  --input-bg: #2a2a2a;
+  --chat-bg: #1e1e1e;
+  --chat-border: #333;
+  --output-bg: #2a2a2a;
+  --output-border: #444;
+}
+
+body {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Header */
+.header {
+  width: 100%;
+  text-align: center;
+  margin-top: 100%;
+  padding: 0 1rem;
+}
+
+.header .title {
+  font-weight: 200;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  max-width: 90%;
+  margin: auto;
+}
+
+.gemini {
+  font-weight: bold;
+  background: linear-gradient(to right, #4285f4, #d9657d);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Chat area - scrollable */
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 800px;
+  margin: 5rem auto 0 auto;
+  padding: 0 1rem;
+  padding-bottom: 150px; /* space for typing area */
+  height: calc(100vh - 100px); /* adjust based on header + input area */
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+/* Messages */
+.message {
+  max-width: 70%;
+  word-wrap: break-word;
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0.8rem 1rem;
+}
+
+/* User / AI alignment */
+.user {
+  align-self: flex-end;
+}
+.Gemini {
+  align-self: flex-start;
+}
+
+.loading {
+  animation: transition 0.7s ease forwards;
+  height: fit-content;
+  background-color: transparent;
+  margin: 5px 0;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 15px;
+}
+
+/* Typing area - pinned to bottom */
+.typing-area {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 800px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: var(--primary-color);
+  padding: 10px 15px;
+  border-radius: 25px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 20px;
+  flex: 1 1 300px;
+  border: 1px solid var(--text-color);
+  padding: 0.5rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  width: 770px;
+}
+
+/* Input wrapper */
+.input-wrapper input {
+  width: 70%;
+  min-width: 150px;
+  font-size: 1rem;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+}
+
+#send-message-button {
+  border: none;
+  background-color: #efefef;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+  border-radius: 50%;
+  padding: 0.5rem;
+}
+
+/* File Upload */
+.file-upload button {
+  border: 1px solid var(--chat-border);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background: var(--secondary-color);
+  cursor: pointer;
+}
+
+.file-upload button:hover {
+  background: var(--secondary-hover-color);
+}
+
+/* Animations */
+@keyframes transition {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------------------
+   Responsive Adjustments
+--------------------------- */
+@media (max-width: 768px) {
+  /* .chat-area {
+    margin: 3rem auto 0 auto;
+    width: 95%;
+  } */
+
+  .typing-area {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .input-wrapper {
+    flex: 1 1 100%;
+  }
+
+  .header .title {
+    font-size: clamp(1.2rem, 5vw, 2rem);
+  }
+  .chat-area {
+    width: 100%;
+    padding: 0 0.5rem;
+  }
+  .message {
+    max-width: 85%;
+    font-size: 0.9rem;
+  }
+  .input-wrapper input {
+    width: 60%;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 480px) {
+  .chat-area {
+    height: calc(100vh - 120px); /* more space for mobile typing */
+  }
+  .message {
+    max-width: 90%;
+    font-size: 0.85rem;
+  }
+  .input-wrapper input {
+    width: 55%;
+    font-size: 0.85rem;
+  }
+  .typing-area {
+    padding: 8px 5px;
+  }
+}

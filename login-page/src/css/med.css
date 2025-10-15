@@ -1,0 +1,12 @@
+.chat-section {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+.chat-section h2 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
