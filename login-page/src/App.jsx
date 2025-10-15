@@ -11,6 +11,8 @@ import ManageUsers from "./Components/manageUsers";
 import Appointments from "./Components/manageAppointments";
 import AboutUs from "./Components/about"; 
 import FeedbackPage from "./Components/feedback";
+import chatBot from "./Components/chatBot"; 
+import Med from "./Components/med";
 
 
 function App() {
@@ -28,7 +30,8 @@ function App() {
         <Route path="/manageAppointments" element={<Appointments/>}/>
         <Route path="/about" element={<AboutUs />} />
         <Route path="/feedback" element={<FeedbackPage />} />
-
+        <Route path="/chatBot" element={<chatBot />} />
+        <Route path="/med" element={<Med/>} />
 
       </Routes>
     </Router>
