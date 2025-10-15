@@ -16,6 +16,15 @@ function ChatBot() {
     }, 100);
   };
 
+  // Parse AI response into medicine objects
+  const parseMedicines = (text) => {
+    const medicines = text.split("\n\n").filter(Boolean);
+    return medicines.map((med) => {
+      const [title, ...points] = med.split("\n").map(line => line.replace(/^•\s*/, '').trim());
+      return { title, points };
+    });
+  };
+
   const fetchAPIResponse = async (chat) => {
     try {
       const loadingMsg = { sender: "Gemini", text: "Loading...", loading: true };
@@ -36,8 +45,13 @@ function ChatBot() {
         "⚠️ No response from API";
 
       setMessages((prev) =>
-        prev.filter((msg) => !msg.loading).concat({ sender: "Gemini", text: aiText })
+        prev.filter((msg) => !msg.loading).concat({
+          sender: "Gemini",
+          text: aiText,
+          medicineResponse: true,
+        })
       );
+      scrollToBottom();
     } catch (err) {
       setMessages((prev) =>
         prev.filter((msg) => !msg.loading).concat({
@@ -45,8 +59,8 @@ function ChatBot() {
           text: "❌ Error: " + err.message,
         })
       );
+      scrollToBottom();
     }
-    scrollToBottom();
   };
 
   const handleSend = (e) => {
@@ -55,7 +69,6 @@ function ChatBot() {
 
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
     scrollToBottom();
-
     fetchAPIResponse(input);
     setInput("");
   };
@@ -64,66 +77,40 @@ function ChatBot() {
     const file = event.target.files[0];
     if (!file) return;
 
-    setMessages((prev) => [
-      ...prev,
-      { sender: "user", text: `📂 Selected file: ${file.name} (${(file.size / 1024).toFixed(2)} KB)` },
-    ]);
+    if (file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imgData = e.target.result;
 
-    const aiInstruction = `
-You are an AI assistant. The user uploaded a prescription (text or image). 
+        // Show only the image in chat
+        setMessages((prev) => [
+          ...prev,
+          { sender: "user", image: imgData },
+        ]);
+        scrollToBottom();
+
+        // OCR + AI processing
+        Tesseract.recognize(imgData, "eng", { logger: (m) => console.log(m) }).then(
+          ({ data: { text } }) => {
+            const aiInstruction = `
+You are an AI assistant. The user uploaded a prescription (image). 
 Extract only the medicines actually written in this prescription. 
 For each medicine, provide:
 - The medicine type/class (e.g., Antibiotic, NSAID, Antihistamine)
 - 3 concise bullet points describing its main uses
-Do NOT include any other medicines, patient info, or dosage instructions. 
+Do NOT include any other medicines, patient info, or dosage instructions.
 Format the response like this:
 
-- MedicineName: Type
-  • Usage 1
-  • Usage 2
-  • Usage 3
-...
+MedicineName: Type
+• Usage 1
+• Usage 2
+• Usage 3
 `;
-
-    if (file.type.startsWith("text/")) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const fileContent = e.target.result;
-        setMessages((prev) => [
-          ...prev,
-          { sender: "user", text: `File Content Preview:\n${fileContent.substring(0, 200)}...` },
-        ]);
-        scrollToBottom();
-        fetchAPIResponse(`${aiInstruction}\n\nPrescription content:\n${fileContent}`);
-      };
-      reader.readAsText(file);
-    } else if (file.type.startsWith("image/")) {
-      // OCR processing
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const imgData = e.target.result;
-        setMessages((prev) => [
-          ...prev,
-          {
-            sender: "user",
-            text: `📷 Uploaded image: <br><img src="${imgData}" style="max-width:200px; border-radius:8px;" />`,
-          },
-        ]);
-        scrollToBottom();
-
-        Tesseract.recognize(imgData, "eng", { logger: (m) => console.log(m) }).then(({ data: { text } }) => {
-          setMessages((prev) => [
-            ...prev,
-            { sender: "user", text: `Extracted Prescription Text:\n${text.substring(0, 300)}...` },
-          ]);
-          scrollToBottom();
-          fetchAPIResponse(`${aiInstruction}\n\nPrescription content:\n${text}`);
-        });
+            fetchAPIResponse(`${aiInstruction}\n\nPrescription content:\n${text}`);
+          }
+        );
       };
       reader.readAsDataURL(file);
-    } else {
-      setMessages((prev) => [...prev, { sender: "user", text: `⚠️ Unsupported file type (${file.type})` }]);
-      scrollToBottom();
     }
   };
 
@@ -140,13 +127,46 @@ Format the response like this:
       </header>
 
       <div className="chat-area">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`message ${msg.sender}`}
-            dangerouslySetInnerHTML={{ __html: msg.text }}
-          ></div>
-        ))}
+        {messages.map((msg, index) => {
+          // User uploaded image
+          if (msg.image) {
+            return (
+              <div key={index} className="message user">
+                <img
+                  src={msg.image}
+                  alt="uploaded"
+                  style={{ maxWidth: "200px", borderRadius: "8px" }}
+                />
+              </div>
+            );
+          }
+
+          // AI medicine response as cards
+          if (msg.sender === "Gemini" && msg.medicineResponse) {
+            const medicines = parseMedicines(msg.text);
+            return (
+              <div key={index}>
+                {medicines.map((med, i) => (
+                  <div key={i} className="medicine-card">
+                    <h3>{med.title}</h3>
+                    <ul>
+                      {med.points.map((p, j) => (
+                        <li key={j}>{p}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            );
+          }
+
+          // Default messages
+          return (
+            <div key={index} className={`message ${msg.sender}`}>
+              {msg.text}
+            </div>
+          );
+        })}
         <div ref={chatEndRef}></div>
       </div>
 
@@ -154,22 +174,28 @@ Format the response like this:
         <form className="typing-form" onSubmit={handleSend}>
           <div className="input-wrapper">
             <div className="file-upload">
-          <input type="file" id="fileInput" style={{ display: "none" }} onChange={handleFile} />
-          <button onClick={() => document.getElementById("fileInput").click()}>📂 Upload File</button>
-        </div>
+              <input
+                type="file"
+                id="fileInput"
+                style={{ display: "none" }}
+                onChange={handleFile}
+              />
+              <button type="button" onClick={() => document.getElementById("fileInput").click()}>
+                📂 Upload File
+              </button>
+            </div>
+
             <input
               type="text"
               placeholder="Enter a prompt here"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <button type="submit">
+            <button className="submitBtn" type="submit">
               <span>➤</span>
             </button>
           </div>
         </form>
-
-       
       </div>
     </>
   );
