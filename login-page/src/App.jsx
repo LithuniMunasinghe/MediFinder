@@ -11,7 +11,6 @@ import ManageUsers from "./Components/manageUsers";
 import Appointments from "./Components/manageAppointments";
 import AboutUs from "./Components/about"; 
 import FeedbackPage from "./Components/feedback";
-import LocationPage from "./Components/location";
 
 
 function App() {
@@ -29,7 +28,7 @@ function App() {
         <Route path="/manageAppointments" element={<Appointments/>}/>
         <Route path="/about" element={<AboutUs />} />
         <Route path="/feedback" element={<FeedbackPage />} />
-        <Route path="/location" element={<LocationPage />} />
+
 
       </Routes>
     </Router>
