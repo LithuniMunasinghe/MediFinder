@@ -13,6 +13,7 @@ import AboutUs from "./Components/about";
 import FeedbackPage from "./Components/feedback";
 import chatBot from "./Components/chatBot"; 
 import Med from "./Components/med";
+import LocationPage from "./Components/location";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/chatBot" element={<chatBot />} />
         <Route path="/med" element={<Med/>} />
+        <Route path="/location" element={<LocationPage/>} />
 
       </Routes>
     </Router>
