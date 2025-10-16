@@ -52,6 +52,16 @@ body {
   text-align: center;
   margin-top: 100%;
   padding: 0 1rem;
+  transition: all 0.5s ease;
+  overflow: hidden;
+  height: auto;
+  
+}
+.header-container.hide {
+  height: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
 }
 
 .header .title {
@@ -75,13 +85,20 @@ body {
   flex-direction: column;
   width: 90%;
   max-width: 800px;
+  min-width: 800px;
   margin: 5rem auto 0 auto;
   padding: 0 1rem;
-  padding-bottom: 150px; /* space for typing area */
+  padding-bottom: 180px; /* space for typing area */
   height: calc(100vh - 100px); /* adjust based on header + input area */
-  overflow-y: hidden;
-  scroll-behavior: smooth;
+  overflow-y: scroll; /* enable scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
+.chat-area::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+ 
 /* Message Card Style */
 .message {
   max-width: 75%;
@@ -187,7 +204,6 @@ body {
 
 .input-wrapper input:focus {
   outline: none;
-  border-radius: 50%;
 }
 .submitBtn {
   border: none !important;

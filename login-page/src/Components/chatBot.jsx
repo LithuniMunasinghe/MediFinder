@@ -120,11 +120,14 @@ MedicineName: Type
 
   return (
     <>
-      <header className="header">
-        <h1 className="title">
-          Meet <span className="gemini">MEDIFINDER</span>, your personal AI assistant
-        </h1>
-      </header>
+    <div className="chatBot">
+      {messages.length === 0 && (
+        <header className="header">
+          <h1 className="title">
+            Meet <span className="gemini">MEDIFINDER</span>, your personal AI assistant
+          </h1>
+        </header>
+      )}
 
       <div className="chat-area">
         {messages.map((msg, index) => {
@@ -169,7 +172,8 @@ MedicineName: Type
         })}
         <div ref={chatEndRef}></div>
       </div>
-
+      </div>
+      
       <div className="typing-area">
         <form className="typing-form" onSubmit={handleSend}>
           <div className="input-wrapper">
@@ -197,6 +201,7 @@ MedicineName: Type
           </div>
         </form>
       </div>
+      
     </>
   );
 }
