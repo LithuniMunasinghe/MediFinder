@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import "../css/loginRegister.css";
-import axios from "axios"; // Import axios for making API requests
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const LoginRegister = () => {
-  const [isSignUp, setIsSignUp] = useState(false); // Default to Sign In
-  const [isActive, setIsActive] = useState(false); // Active class for animations
-  const [message, setMessage] = useState(''); // Message state for displaying success or error messages
-  const navigate = useNavigate(); // Correctly imported and used
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const navigate = useNavigate();
 
-  // Form field states for both login and register
+  // Form field states
   const [patientUsername, setUsername] = useState('');
   const [patientPassword, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -18,69 +18,78 @@ const LoginRegister = () => {
   const [contact, setContact] = useState('');
   const [email, setEmail] = useState('');
 
-  // Handle form toggle between Sign Up and Sign In
   const toggleForm = () => {
-    setIsSignUp((prevState) => !prevState);
-    setIsActive((prev) => !prev); // Toggle active state for animation
+    setIsSignUp(prev => !prev);
+    setIsActive(prev => !prev);
   };
 
-  // Handle Sign In submission
+  // Handle Sign In
   const handleSubmitSignIn = async (e) => {
     e.preventDefault();
 
-
-
     if (!patientUsername || !patientPassword) {
-      setMessage("Please enter both Username and Password.");
-      alert("Please enter both Username and Password.!");
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Fields",
+        text: "Please enter both Username and Password.",
+      });
       return;
     }
 
     if (patientUsername === "admin" && patientPassword === "1023") {
-      // Redirect to the admin page (replace '/admin' with the actual admin route you want)
-      setMessage("Admin Login successful!");
-      alert("HELLO ADMIN!!");
+      Swal.fire({
+        icon: "success",
+        title: "Welcome Admin!",
+        text: "Redirecting to admin panel...",
+        timer: 1500,
+        showConfirmButton: false,
+      });
       navigate("/admin");
-      return; // Exit the function here to prevent the login request from being made
+      return;
     }
-    
 
     try {
       const response = await axios.post("http://localhost:8080/my-app/loginUser", {
         userName: patientUsername,
-        password: patientPassword
+        password: patientPassword,
       });
-      
-      // Log the response for debugging
-      console.log("Login response:", response);
 
-      // Check if the backend response has a success key with a true value
       if (response.data.success === true) {
-        console.log("Login successful:", response.data);
-        setMessage("Login successful!");
-        alert("Login successful!");
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: "Welcome back!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
         navigate("/home");
-
-        
-        // Redirect to a new page after successful login
       } else {
-        setMessage("Invalid credentials. Please try again.");
-        alert("Invalid credentials. Please try again.");
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Credentials",
+          text: "Please check your username and password.",
+        });
       }
     } catch (error) {
-      console.error("Error during Sign In:", error.response ? error.response.data : error.message);
-      setMessage("Login failed. Please check your credentials and try again.");
-      alert("Login failed. Please check your credentials and try again.");
+      console.error("Error during Sign In:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: "Please try again later.",
+      });
     }
   };
 
-  // Handle Register submission
+  // Handle Sign Up
   const handleSubmitSignUp = async (e) => {
     e.preventDefault();
 
     if (!fullName || !age || !address || !contact || !email || !patientUsername || !patientPassword) {
-      setMessage("Please fill out all fields.");
-      alert("Please fill out all fields.");
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete Details",
+        text: "Please fill out all fields before continuing.",
+      });
       return;
     }
 
@@ -92,33 +101,37 @@ const LoginRegister = () => {
         number: contact,
         address: address,
         userName: patientUsername,
-        password: patientPassword
+        password: patientPassword,
       });
 
-      // Log the response for debugging
-      console.log("Registration response:", response);
-
       if (response.data.id) {
-        console.log("Registration successful:", response.data);
-        setMessage("Registration successful!");
-        alert("Registration successful!");
-
-        // Redirect to a new page after successful registration
+        Swal.fire({
+          icon: "success",
+          title: "Registration Successful!",
+          text: "You can now sign in to your account.",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        toggleForm(); // Switch to Sign In form automatically
       } else {
-        setMessage("Registration failed. Please try again.");
-        alert("Registration failed. Please try again.");
+        Swal.fire({
+          icon: "error",
+          title: "Registration Failed",
+          text: "Something went wrong. Please try again.",
+        });
       }
     } catch (error) {
-      console.error("Error during Sign Up:", error.response ? error.response.data : error.message);
-      setMessage("Registration failed. Please check your details and try again.");
-      alert("Registration failed. Please check your details and try again.");
+      console.error("Error during Sign Up:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: "Please check your details and try again.",
+      });
     }
   };
 
   return (
     <div className={`container ${isActive ? "active" : ""}`} id="container">
-      {/* Display message */}
-      {message && <p className="message">{message}</p>}
 
       {/* Sign Up Form */}
       <div className={`form-container sign-up ${isSignUp ? "visible" : "hidden"}`}>
