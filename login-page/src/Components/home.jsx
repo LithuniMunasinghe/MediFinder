@@ -2,7 +2,7 @@ import React from "react";
 import "../css/home.css";
 import { Link } from "react-router-dom";
 import logo from "../images/logo.png"; // <-- import the logo
-
+import bb from "../images/bb.jpg"
 const Home = () => {
   return (
     <div className="wrapper">
