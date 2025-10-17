@@ -1,23 +1,47 @@
 import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { FaHeartbeat, FaBuilding, FaHandsHelping } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import logo from "../images/logo.png"; // Import the same logo
 import "../css/home.css"; // Reuse the same CSS for navbar
 
 function AboutUs() {
   return (
     <div className="wrapper">
-      {/* Navbar (same as Home.jsx) */}
+       {/* NAVBAR */}
       <header className="navbar">
         <img src={logo} alt="Medicure Logo" className="logo" />
         <ul className="nav-links">
-          <li><Link to="/home">Home</Link></li>
-          <li><Link className="active" to="/about">About us</Link></li>
-          <li><Link to="/doctorView">Doctors</Link></li>
-          <li><Link to="/feedback">Feedback</Link></li>
-          <li><Link to="/location">Location</Link></li>
-          <li><Link to="/med">Medicine</Link></li>
+          <li>
+            <NavLink to="/home" end className={({ isActive }) => (isActive ? "active" : "")}>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>
+              About us
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/doctorView" className={({ isActive }) => (isActive ? "active" : "")}>
+              Doctors
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/feedback" className={({ isActive }) => (isActive ? "active" : "")}>
+              Feedback
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/location" className={({ isActive }) => (isActive ? "active" : "")}>
+              Location
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/med" className={({ isActive }) => (isActive ? "active" : "")}>
+              Medicine
+            </NavLink>
+          </li>
         </ul>
       </header>
 

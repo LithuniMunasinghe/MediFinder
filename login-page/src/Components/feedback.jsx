@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import '../css/feedback.css';
 import logo from '../images/logo.png'; // Import logo
 
@@ -36,19 +36,42 @@ const FeedbackPage = () => {
 
   return (
     <div className="feedback-wrapper">
-      {/* Navbar */}
+       {/* NAVBAR */}
       <header className="navbar">
         <img src={logo} alt="Medicure Logo" className="logo" />
         <ul className="nav-links">
-          <li><Link className="active" to="/home">Home</Link></li>
-          <li><Link to="/about">About us</Link></li>
-          <li><Link to="/doctorView">Doctors</Link></li>
-          <li><Link to="/feedback">Feedback</Link></li>
-          <li><Link to="/location">Location</Link></li>
-          <li><Link to="/med">Medicine</Link></li> 
+          <li>
+            <NavLink to="/home" end className={({ isActive }) => (isActive ? "active" : "")}>
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>
+              About us
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/doctorView" className={({ isActive }) => (isActive ? "active" : "")}>
+              Doctors
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/feedback" className={({ isActive }) => (isActive ? "active" : "")}>
+              Feedback
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/location" className={({ isActive }) => (isActive ? "active" : "")}>
+              Location
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/med" className={({ isActive }) => (isActive ? "active" : "")}>
+              Medicine
+            </NavLink>
+          </li>
         </ul>
       </header>
-
       {/* Feedback Container */}
       <div className="feedback-container">
         <h2 className="feedback-title">Submit Your Feedback</h2>

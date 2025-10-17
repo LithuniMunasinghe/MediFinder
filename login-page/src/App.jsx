@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import LoginRegister from "./Components/loginRegister";
 import Home from "./Components/home";
 import DoctorView from "./Components/doctorView";
@@ -11,10 +12,9 @@ import ManageUsers from "./Components/manageUsers";
 import Appointments from "./Components/manageAppointments";
 import AboutUs from "./Components/about"; 
 import FeedbackPage from "./Components/feedback";
-import chatBot from "./Components/chatBot"; 
+import ChatBot from "./Components/chatBot"; 
 import Med from "./Components/med";
 import LocationPage from "./Components/location";
-
 
 function App() {
   return (
@@ -26,15 +26,14 @@ function App() {
         <Route path="/doctorView" element={<DoctorView />} />
         <Route path="/appointment" element={<AppointmentPage />} />
         <Route path="/admin" element={<AdminHome />} />
-        <Route path="/manageDoctor" element={<Doctors/>}/>
-        <Route path="/manageUsers" element={<ManageUsers/>}/>
-        <Route path="/manageAppointments" element={<Appointments/>}/>
+        <Route path="/manageDoctor" element={<Doctors />} />
+        <Route path="/manageUsers" element={<ManageUsers />} />
+        <Route path="/manageAppointments" element={<Appointments />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/feedback" element={<FeedbackPage />} />
-        <Route path="/chatBot" element={<chatBot />} />
-        <Route path="/med" element={<Med/>} />
-        <Route path="/location" element={<LocationPage/>} />
-
+        <Route path="/chatBot" element={<ChatBot />} />
+        <Route path="/med" element={<Med />} />
+        <Route path="/location" element={<LocationPage />} />
       </Routes>
     </Router>
   );
