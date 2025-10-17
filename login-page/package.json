@@ -20,6 +20,8 @@
     "react-icon": "^1.0.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.9.4",
+    "react-slick": "^0.31.0",
+    "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.26.2",
     "tesseract.js": "^6.0.1"
   },

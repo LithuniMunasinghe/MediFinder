@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Components
 import LoginRegister from "./Components/loginRegister";
 import Home from "./Components/home";
 import DoctorView from "./Components/doctorView";
@@ -10,10 +11,11 @@ import AdminHome from "./Components/admin";
 import Doctors from "./Components/manageDoctor";
 import ManageUsers from "./Components/manageUsers";
 import Appointments from "./Components/manageAppointments";
-import AboutUs from "./Components/about"; 
+import AboutUs from "./Components/about";
 import FeedbackPage from "./Components/feedback";
-import ChatBot from "./Components/chatBot"; 
+import ChatBot from "./Components/chatBot";
 import Med from "./Components/med";
+import MedicineSearch from "./Components/MedicineSearch"; 
 import LocationPage from "./Components/location";
 
 function App() {
@@ -33,6 +35,7 @@ function App() {
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/chatBot" element={<ChatBot />} />
         <Route path="/med" element={<Med />} />
+        <Route path="/medicineSearch" element={<MedicineSearch />} /> 
         <Route path="/location" element={<LocationPage />} />
       </Routes>
     </Router>
