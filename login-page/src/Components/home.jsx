@@ -1,73 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../css/home.css";
-import { NavLink, useNavigate } from "react-router-dom";
-import logo from "../images/logo.png";
+import "../css/slider.css";  
+import { Link } from "react-router-dom";
+import logo from "../images/logo.png"; // <-- import the logo
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick"; 
+import slide2 from "../images/slide2.jpg";
+import slide3 from "../images/slide3.jpg";
+import slide4 from "../images/slide4.jpg";
+
 
 const Home = () => {
-  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // clear session
-    navigate("/loginRegister");        // redirect to login page
-  };
+
+  const slides = [slide2, slide3, slide4];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % slides.length);
+    }, 3000); // change every 3 seconds
+    return () => clearInterval(interval);
+  }, []);
+
 
   return (
     <div className="wrapper">
       {/* Navbar */}
       <header className="navbar">
-        <img src={logo} alt="Medicure Logo" className="logo" />
+<img src={logo} alt="Medicure Logo" className="logo" />
 
-        <div className="nav-right">
-          <ul className="nav-links">
-            <li>
-              <NavLink to="/home" end className={({ isActive }) => (isActive ? "active" : "")}>
-                Home
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>
-                About Us
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/doctorView" className={({ isActive }) => (isActive ? "active" : "")}>
-                Doctors
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/feedback" className={({ isActive }) => (isActive ? "active" : "")}>
-                Feedback
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/location" className={({ isActive }) => (isActive ? "active" : "")}>
-                Location
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/med" className={({ isActive }) => (isActive ? "active" : "")}>
-                Medicine
-              </NavLink>
-            </li>
-          </ul>
-
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
+        <ul className="nav-links">
+          <li><Link className="active" to="/">Home</Link></li>
+          <li><Link to="/about">About us</Link></li>
+          <li><Link to="/doctorView">Doctors</Link></li>
+          <li><Link to="/feedback">Feedback</Link></li>
+          <li><Link to="/location">Location</Link></li>
+          <li><Link to="/med">Medicine</Link></li> 
+        </ul>
       </header>
+
+      {/* Image cards with fade */}
+      <div className="card-slider">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`card ${index === currentIndex ? "active" : ""}`}
+          >
+            <img src={slide} alt={`slide-${index}`} />
+          </div>
+        ))}
+      </div>
+
 
       {/* Centered content */}
       <div className="center">
-        <h1>Welcome To MEDI-FINDER</h1>
-        
+    
         {/* Optional buttons */}
-        {/*
-        <div className="buttons">
+        {/* <div className="buttons">
           <button>Get Started</button>
           <button className="btn2">Learn More</button>
-        </div>
-        */}
+        </div> */}
       </div>
     </div>
   );
