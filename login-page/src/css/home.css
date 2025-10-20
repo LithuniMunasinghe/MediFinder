@@ -16,7 +16,7 @@ body {
 
 /* NAVBAR */
 .navbar {
-  height: 100px;
+  height: 120px;
   position: fixed;
   top: 0;
   left: 0;   
@@ -31,10 +31,21 @@ body {
   box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.2);
 }
 
-.navbar .logo {
-  width: 90px;
-  height: auto;
+.logo-container {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 190%; 
+}
+
+.logo-img {
+  height: 90%;  
+  margin-top: -50px;           
+  width: auto;                
+  object-fit: contain;      
   cursor: pointer;
+  display: block;
 }
 
 .navbar ul {
@@ -64,15 +75,7 @@ body {
   color: #fff;
 }
 
-/* Center Content */
-.wrapper .center {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  user-select: none;
-}
+
 
 .center h1 {
   color: black;
@@ -116,3 +119,4 @@ body {
   background: #cc0000;
   transform: scale(1.05);
 }
+

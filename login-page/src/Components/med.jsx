@@ -9,7 +9,9 @@ export default function Med() {
     <div>
        {/* NAVBAR */}
       <header className="navbar">
-        <img src={logo} alt="Medicure Logo" className="logo" />
+         <div className="logo-container">
+        <img src={logo} alt="Medicure Logo" className="logo-img" />
+        </div>
         <ul className="nav-links">
           <li>
             <NavLink to="/home" end className={({ isActive }) => (isActive ? "active" : "")}>

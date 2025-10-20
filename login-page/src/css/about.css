@@ -1,0 +1,109 @@
+.about-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 1;
+  padding: 160px 20px 60px; /* ensures content sits nicely above navbar */
+  text-align: center;
+  color: #a0f3f1;
+  background: transparent;
+  
+  .about-content-box {
+  background: rgba(55, 121, 139, 0.3); /* change this color as you like */
+  border-radius: 25px;
+  padding: 60px 40px;
+  margin: 0 auto;
+  max-width: 1100px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+  /* soft dark gradient background */
+  background: linear-gradient(
+    to bottom,
+    rgba(84, 141, 198, 0.347),
+    rgba(111, 152, 191, 0.404)
+  ),
+  
+}
+
+/* TITLE */
+.about-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgba(55, 121, 139, 0.9);
+  text-shadow: 0 2px 6px rgba(27, 27, 27, 0.505);
+  margin-bottom: 10px;
+}
+
+.about-subtext {
+  font-size: 2rem;
+  color: #5d99ad;
+  margin-bottom: 10px;
+}
+
+/* GLASS BOXES */
+.about-box {
+  background: rgba(47, 90, 83, 0.831);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 30px;
+  color: #7b9ba0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.about-box:hover {
+  transform: translateY(-6px);
+  background: rgba(55, 121, 139, 0.9);
+}
+
+.about-box h3,
+.about-box h4 {
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.about-box p {
+  color: #f1f1f1;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ICONS */
+.about-icon {
+  font-size: 2.5rem;
+  color: #17363ac7;
+  margin-bottom: 15px;
+}
+
+/* SMALL BOXES */
+.about-box.small {
+  padding: 40px;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* RESPONSIVE FIXES */
+@media (max-width: 768px) {
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-subtext {
+    font-size: 1rem;
+  }
+
+  .about-section {
+    padding-top: 120px;
+  }
+}

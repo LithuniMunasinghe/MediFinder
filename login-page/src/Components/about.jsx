@@ -4,13 +4,16 @@ import { FaHeartbeat, FaBuilding, FaHandsHelping } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import logo from "../images/logo.png"; // Import the same logo
 import "../css/home.css"; // Reuse the same CSS for navbar
+import "../css/about.css";
 
 function AboutUs() {
   return (
     <div className="wrapper">
        {/* NAVBAR */}
       <header className="navbar">
-        <img src={logo} alt="Medicure Logo" className="logo" />
+        <div className="logo-container">
+        <img src={logo} alt="Medicure Logo" className="logo-img" />
+        </div>
         <ul className="nav-links">
           <li>
             <NavLink to="/home" end className={({ isActive }) => (isActive ? "active" : "")}>
@@ -45,90 +48,66 @@ function AboutUs() {
         </ul>
       </header>
 
-      {/* About Us Content */}
-      <Container className="mt-5 pt-5"> {/* pt-5 ensures content is not hidden under navbar */}
-        {/* Header Section */}
-        <Row className="text-center mb-4">
-          <Col>
-            <h1>ABC Hospital</h1>
-            <p>Providing quality healthcare with care and compassion.</p>
-          </Col>
-        </Row>
+      {/* ABOUT SECTION */}
+      <section className="about-section">
+        <div className="about-content-box">
+        <Container>
+          <Row className="text-center mb-4">
+            <Col>
+              <h1 className="about-title">ABC Hospital</h1>
+              <p className="about-subtext">
+                Providing quality healthcare with care and compassion.
+              </p>
+            </Col>
+          </Row>
 
-        {/* Mission and Vision Section */}
-        <Row className="mb-3">
-          <Col md={6}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <Card.Title>
-                  <FaHeartbeat className="mr-2" /> Mission
-                </Card.Title>
-                <Card.Text>
+          <Row className="about-row">
+            <Col md={6}>
+              <div className="about-box">
+                <FaHeartbeat className="about-icon" />
+                <h3>Our Mission</h3>
+                <p>
                   To provide high-quality healthcare with compassion and professionalism.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={6}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <Card.Title>
-                  <FaBuilding className="mr-2" /> Vision
-                </Card.Title>
-                <Card.Text>
-                  To lead the region in healthcare, offering state-of-the-art care.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+                </p>
+              </div>
+            </Col>
+            <Col md={6}>
+              <div className="about-box">
+                <FaBuilding className="about-icon" />
+                <h3>Our Vision</h3>
+                <p>
+                  To lead the region in healthcare, offering state-of-the-art care and technology.
+                </p>
+              </div>
+            </Col>
+          </Row>
 
-        {/* Core Values Section */}
-        <Row className="mb-3">
-          <Col md={4}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <FaHandsHelping className="display-4 mb-2 text-primary" />
-                <Card.Title>Compassion</Card.Title>
-                <Card.Text>
-                  We care for all with kindness and empathy.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <FaHeartbeat className="display-4 mb-2 text-success" />
-                <Card.Title>Excellence</Card.Title>
-                <Card.Text>
-                  We deliver the highest standards of care and service.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="shadow-sm">
-              <Card.Body>
-                <FaBuilding className="display-4 mb-2 text-info" />
-                <Card.Title>Innovation</Card.Title>
-                <Card.Text>
-                  We continuously adopt the latest healthcare technologies.
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-
-        {/* Call to Action Section */}
-        <Row className="text-center mb-5">
-          <Col>
-            <Button variant="primary" href="/home">
-              Get in Touch
-            </Button>
-          </Col>
-        </Row>
-      </Container>
+          <Row className="about-values">
+            <Col md={4}>
+              <div className="about-box small">
+                <FaHandsHelping className="about-icon" />
+                <h4>Compassion</h4>
+                <p>We care for all with kindness and empathy.</p>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className="about-box small">
+                <FaHeartbeat className="about-icon" />
+                <h4>Excellence</h4>
+                <p>We deliver the highest standards of care and service.</p>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className="about-box small">
+                <FaBuilding className="about-icon" />
+                <h4>Innovation</h4>
+                <p>We continuously adopt the latest healthcare technologies.</p>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+        </div>
+      </section>
     </div>
   );
 }
