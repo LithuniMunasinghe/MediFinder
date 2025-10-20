@@ -43,7 +43,9 @@ const DoctorTable = () => {
     <div className="wrapper">
       {/* Navbar */}
       <header className="navbar">
-        <img src={logo} alt="Medicure Logo" className="logo" />
+         <div className="logo-container">
+        <img src={logo} alt="Medicure Logo" className="logo-img" />
+        </div>
         <ul className="nav-links">
           <li><a href="/home">Home</a></li>
           <li><a href="/about">About us</a></li>

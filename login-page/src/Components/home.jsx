@@ -29,8 +29,9 @@ const Home = () => {
     <div className="wrapper">
       {/* Navbar */}
       <header className="navbar">
-<img src={logo} alt="Medicure Logo" className="logo" />
-
+        <div className="logo-container">
+      <img src={logo} alt="Medicure Logo" className="logo-img" />
+        </div>
         <ul className="nav-links">
           <li><Link className="active" to="/">Home</Link></li>
           <li><Link to="/about">About us</Link></li>
