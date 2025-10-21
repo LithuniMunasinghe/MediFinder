@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/medicineSearch.css";
 import logo from "../images/logo.png";
+import "../css/home.css";
 
 const MedicineSearch = () => {
   const [medicineName, setMedicineName] = useState("");
@@ -21,8 +22,14 @@ const MedicineSearch = () => {
       <nav className="navbar">
         <img src={logo} alt="Logo" className="logo" />
         <ul className="nav-links">
-          <li><Link to="/home">Home</Link></li>
+          <li><Link className="active" to="/home">Home</Link></li>
+          <li><Link to="/about">About us</Link></li>
+          <li><Link to="/doctorView">Doctors</Link></li>
+          <li><Link to="/feedback">Feedback</Link></li>
+          <li><Link to="/location">Location</Link></li>
+          <li><Link to="/med">Medicine</Link></li> 
           <li><Link to="/medicineSearch">Medicine Search</Link></li>
+          <li><Link to="/loginRegister"> Logout</Link></li>                   
         </ul>
       </nav>
 
