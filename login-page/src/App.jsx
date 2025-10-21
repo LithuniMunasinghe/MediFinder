@@ -17,6 +17,10 @@ import ChatBot from "./Components/chatBot";
 import Med from "./Components/med";
 import MedicineSearch from "./Components/MedicineSearch"; 
 import LocationPage from "./Components/location";
+import PharmacyLogin from "./Components/PharmacyLogin";
+import PharmacyDashboard from "./Components/PharmacyDashboard";
+import AdminPharmacyManage from "./Components/AdminPharmacyManage";
+
 
 function App() {
   return (
@@ -37,6 +41,9 @@ function App() {
         <Route path="/med" element={<Med />} />
         <Route path="/medicineSearch" element={<MedicineSearch />} /> 
         <Route path="/location" element={<LocationPage />} />
+        <Route path="/pharmacyLogin" element={<PharmacyLogin />} />
+        <Route path="/pharmacyDashboard" element={<PharmacyDashboard />} />
+        <Route path="/adminPharmacies" element={<AdminPharmacyManage />} />
       </Routes>
     </Router>
   );

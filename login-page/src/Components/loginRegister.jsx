@@ -156,6 +156,24 @@ const LoginRegister = () => {
           <input type="password" placeholder="Password" value={patientPassword} onChange={(e) => setPassword(e.target.value)} />
           <a href="#">Forgot Your Password?</a>
           <button type="submit">Sign In</button>
+          {/* Pharmacy Login Button */}
+<button
+  type="button"
+  style={{
+    marginTop: "15px",
+    padding: "10px 20px",
+    backgroundColor: "#4518a4",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontWeight: "bold",
+  }}
+  onClick={() => navigate("/pharmacyLogin")}
+>
+  Pharmacy Login
+</button>
+
         </form>
       </div>
 

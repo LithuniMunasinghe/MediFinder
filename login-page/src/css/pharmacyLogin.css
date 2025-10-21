@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+.pharmacy-login-wrapper {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url('../images/lms.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.pharmacy-login-wrapper h2 {
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.pharmacy-login-wrapper form {
+  background-color: rgba(255,255,255,0.9);
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.pharmacy-login-wrapper input {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.pharmacy-login-wrapper button {
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2a7fc9;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
