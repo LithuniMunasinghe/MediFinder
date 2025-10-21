@@ -16,6 +16,7 @@ const Home = () => {
 
   const slides = [slide2, slide3, slide4];
   const [currentIndex, setCurrentIndex] = useState(0);
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,7 +40,14 @@ const Home = () => {
           <li><Link to="/feedback">Feedback</Link></li>
           <li><Link to="/location">Location</Link></li>
           <li><Link to="/med">Medicine</Link></li> 
-         <li><Link to="/medicineSearch">Medicine Search</Link></li> 
+         <li><Link to="/medicineSearch">Medicine Search</Link></li>
+          <li>
+            <Link
+              to="/loginRegister"
+            >
+              Logout
+            </Link>
+          </li>
         </ul>
       </header>
 

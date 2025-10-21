@@ -45,6 +45,16 @@ function AboutUs() {
               Medicine
             </NavLink>
           </li>
+          <li>
+           <NavLink to="/MedicineSearch" className={({ isActive }) => (isActive ? "active" : "")}>
+              Medicine Search
+           </NavLink>
+          </li> 
+           <li>
+            <NavLink to="/loginRegister" className={({ isActive }) => (isActive ? "active" : "")}>
+              Logout
+            </NavLink>
+          </li>
         </ul>
       </header>
 
@@ -54,9 +64,9 @@ function AboutUs() {
         <Container>
           <Row className="text-center mb-4">
             <Col>
-              <h1 className="about-title">ABC Hospital</h1>
+              <h1 className="about-title">MediFinder</h1>
               <p className="about-subtext">
-                Providing quality healthcare with care and compassion.
+                Smart Search, Fast Relief.
               </p>
             </Col>
           </Row>
