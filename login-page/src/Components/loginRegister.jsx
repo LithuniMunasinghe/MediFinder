@@ -162,7 +162,7 @@ const LoginRegister = () => {
   style={{
     marginTop: "15px",
     padding: "10px 20px",
-    backgroundColor: "#4518a4",
+    backgroundColor: "#2f7dc2ff",
     color: "white",
     border: "none",
     borderRadius: "8px",
