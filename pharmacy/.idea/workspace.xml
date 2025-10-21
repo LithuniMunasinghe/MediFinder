@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8207e216-6b16-4036-b993-a58bb10af1f7" name="Changes" comment="" />
+    <list default="true" id="8207e216-6b16-4036-b993-a58bb10af1f7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../pharmacies/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pharmacies/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pharmacies/src/main/webapp/WEB-INF/web.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pharmacies/src/main/webapp/index.jsp" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,14 +31,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.PharmacyApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Uyasha Ishini/Desktop/HNDFinalProject/MediFinder/MediFinder/pharmacy/pom.xml"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.PharmacyApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Uyasha Ishini/Desktop/HNDFinalProject/MediFinder/MediFinder/pharmacy/pom.xml&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="PharmacyApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.pharmacy.PharmacyApplication" />
