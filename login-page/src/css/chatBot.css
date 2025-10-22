@@ -65,15 +65,17 @@ body {
 }
 
 .header .title {
+  color: #2d4045;         /* Add # for hex color */
   font-weight: 200;
   font-size: clamp(1.5rem, 4vw, 3rem);
   max-width: 90%;
   margin: auto;
 }
 
+
 .gemini {
   font-weight: bold;
-  background: linear-gradient(to right, #4285f4, #d9657d);
+  background: linear-gradient(to right, #5935b1, #d9657d);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -171,6 +173,7 @@ body {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
+  height:85px;
   width: 90%;
   max-width: 800px;
   display: flex;
@@ -209,6 +212,7 @@ body {
   border: none !important;
   outline: none;
   background: var(--secondary-color);
+  color: #786f6f;
   font-size: 1.4rem;
   padding: 0.3rem 0.6rem;
   border-radius: 50px;
@@ -242,6 +246,7 @@ body {
 
 /* File Upload */
 .file-upload button {
+  color: #786f6f;
   border: 1px solid var(--chat-border);
   padding: 0.5rem 1rem;
   border-radius: 10px;
