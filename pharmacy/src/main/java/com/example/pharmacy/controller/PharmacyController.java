@@ -45,8 +45,8 @@ public class PharmacyController {
 
     // Get all medicines in a pharmacy
     @GetMapping("/{pharmacyId}/medicines")
-    public List<MedicineInventoryDTO> getMedicinesInPharmacy(@PathVariable Long pharmacyId) {
-        return pharmacyService.getMedicinesInPharmacy(pharmacyId);
+    public List<InventoryDTO> getMedicines(@PathVariable Long pharmacyId) {
+        return pharmacyService.getMedicinesByPharmacy(pharmacyId);
     }
 
     // Search pharmacies by medicine names
@@ -78,10 +78,29 @@ public class PharmacyController {
 
     // Update medicine in a pharmacy
     @PutMapping("/{pharmacyId}/update-medicine/{inventoryId}")
-    public Inventory updateMedicine(@PathVariable Long pharmacyId,
-                                    @PathVariable Long inventoryId,
-                                    @RequestBody InventoryDTO dto) {
-        return pharmacyService.updateMedicineInPharmacy(pharmacyId, inventoryId, dto);
+    public InventoryDTO updateMedicine(
+            @PathVariable Long pharmacyId,
+            @PathVariable Long inventoryId,
+            @RequestBody InventoryDTO dto) {
+
+        Inventory updatedInventory = pharmacyService.updateMedicine(pharmacyId, inventoryId, dto);
+
+        // Convert to DTO for response
+        return new InventoryDTO(
+                updatedInventory.getId(),
+                updatedInventory.getMedicine().getName(),
+                updatedInventory.getMedicine().getDescription(),
+                updatedInventory.getQuantity(),
+                updatedInventory.getPrice()
+        );
+    }
+    //delete medicine
+    @DeleteMapping("/{pharmacyId}/delete-medicine/{inventoryId}")
+    public void deleteMedicine(
+            @PathVariable Long pharmacyId,
+            @PathVariable Long inventoryId) {
+
+        pharmacyService.deleteMedicine(pharmacyId, inventoryId);
     }
 
     @PostMapping("/login")

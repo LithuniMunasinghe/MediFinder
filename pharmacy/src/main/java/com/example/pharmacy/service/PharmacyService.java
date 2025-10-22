@@ -47,8 +47,10 @@ public class PharmacyService {
         Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId)
                 .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
 
-        Medicine medicine = medicineRepository.findById(dto.getMedicineId())
-                .orElseThrow(() -> new RuntimeException("Medicine not found"));
+        Medicine medicine = new Medicine();
+        medicine.setName(dto.getMedicineName());
+        medicine.setDescription(dto.getMedicineDescription());
+        medicine = medicineRepository.save(medicine);
 
         Inventory inventory = new Inventory();
         inventory.setPharmacy(pharmacy);
@@ -60,8 +62,8 @@ public class PharmacyService {
     }
 
     //  Get all medicines in a pharmacy
-    public List<MedicineInventoryDTO> getMedicinesInPharmacy(Long pharmacyId) {
-        return inventoryRepository.findMedicinesWithInventoryByPharmacy(pharmacyId);
+    public List<InventoryDTO> getMedicinesByPharmacy(Long pharmacyId) {
+        return inventoryRepository.findByPharmacyId(pharmacyId);
     }
 
     // Update a pharmacy
@@ -90,26 +92,38 @@ public class PharmacyService {
     }
 
     // Update medicine in a pharmacy
-    public Inventory updateMedicineInPharmacy(Long pharmacyId, Long inventoryId, InventoryDTO dto) {
-        // Get the pharmacy first
-        Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId)
-                .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
-        // Get the existing inventory
+    public Inventory updateMedicine(Long pharmacyId, Long inventoryId, InventoryDTO dto) {
+        // Find the inventory
         Inventory inventory = inventoryRepository.findById(inventoryId)
                 .orElseThrow(() -> new RuntimeException("Inventory not found"));
-        // Make sure this inventory belongs to the pharmacy
+        // Check if inventory belongs to this pharmacy
         if (!inventory.getPharmacy().getId().equals(pharmacyId)) {
-            throw new RuntimeException("This inventory does not belong to the specified pharmacy");
+            throw new RuntimeException("Inventory does not belong to this pharmacy");
         }
-        // Update fields if provided
-        if (dto.getQuantity() != null) {
-            inventory.setQuantity(dto.getQuantity());
-        }
-        if (dto.getPrice() != null) {
-            inventory.setPrice(dto.getPrice());
-        }
-        return inventoryRepository.save(inventory);
+        // Update Medicine fields
+        Medicine medicine = inventory.getMedicine();
+        medicine.setName(dto.getMedicineName());
+        medicine.setDescription(dto.getMedicineDescription());
+        // Update Inventory fields
+        inventory.setQuantity(dto.getQuantity());
+        inventory.setPrice(dto.getPrice());
+        // Save both
+        medicineRepository.save(medicine);      // update medicine
+        return inventoryRepository.save(inventory); // update inventory
     }
+
+    public void deleteMedicine(Long pharmacyId, Long inventoryId) {
+        Inventory inventory = inventoryRepository.findById(inventoryId)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+
+        // Optional: Check if inventory belongs to the pharmacy
+        if (!inventory.getPharmacy().getId().equals(pharmacyId)) {
+            throw new RuntimeException("Inventory does not belong to this pharmacy");
+        }
+
+        inventoryRepository.delete(inventory);
+    }
+
     public Pharmacy login(String name, String password) {
         return pharmacyRepository.findByNameAndPassword(name, password)
                 .orElse(null); // returns null if login fails

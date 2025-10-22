@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import "../css/pharmacyDashboard.css";
 import axios from "axios";
-import "../css/adminPharmacy.css"; // reuse same CSS
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const PharmacyDashboard = () => {
+  const [medicines, setMedicines] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newMedicine, setNewMedicine] = useState({
+    medicineName: "",
+    medicineDescription: "",
+    quantity: "",
+    price: "",
+  });
+  const [editMedicine, setEditMedicine] = useState(null);
+
   const navigate = useNavigate();
   const pharmacyId = localStorage.getItem("pharmacyId");
   const pharmacyName = localStorage.getItem("pharmacyName");
 
-  const [medicines, setMedicines] = useState([]);
-  const [newMedicine, setNewMedicine] = useState({
-    name: "",
-    quantity: "",
-    price: "",
-  });
-
-  // Fetch medicines from backend
   useEffect(() => {
     if (!pharmacyId) {
+      Swal.fire({
+        icon: "error",
+        title: "Access Denied",
+        text: "Please log in first.",
+      });
       navigate("/pharmacyLogin");
-    } else {
-      fetchMedicines();
+      return;
     }
+    fetchMedicines();
   }, [pharmacyId, navigate]);
 
+  // Fetch medicines
   const fetchMedicines = async () => {
     try {
       const response = await axios.get(
@@ -32,144 +42,263 @@ const PharmacyDashboard = () => {
       setMedicines(response.data);
     } catch (error) {
       console.error("Error fetching medicines:", error);
-    }
-  };
-
-  // Add medicine
-  const handleAddMedicine = async (e) => {
-    e.preventDefault();
-    if (!newMedicine.name || !newMedicine.quantity || !newMedicine.price) {
-      alert("Please fill all fields.");
-      return;
-    }
-
-    try {
-      const payload = {
-        medicineId: 0, // You might need to fetch medicine ID from medicine table or create new
-        quantity: parseInt(newMedicine.quantity),
-        price: parseFloat(newMedicine.price),
-      };
-
-      // For simplicity, we assume the medicine is already created in DB.
-      // Otherwise, you need a create-medicine API first.
-
-      await axios.post(
-        `http://localhost:8084/api/pharmacies/${pharmacyId}/add-medicine`,
-        payload
-      );
-
-      setNewMedicine({ name: "", quantity: "", price: "" });
-      fetchMedicines(); // refresh the list
-    } catch (error) {
-      console.error("Error adding medicine:", error);
-    }
-  };
-
-  // Delete medicine
-  const handleDelete = async (inventoryId) => {
-    try {
-      await axios.delete(
-        `http://localhost:8084/api/pharmacies/${pharmacyId}/update-medicine/${inventoryId}`
-      );
-      fetchMedicines();
-    } catch (error) {
-      console.error("Error deleting medicine:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to load medicines.",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   // Logout
   const handleLogout = () => {
-    localStorage.removeItem("pharmacyId");
-    localStorage.removeItem("pharmacyName");
+    localStorage.clear();
+    Swal.fire({
+      icon: "success",
+      title: "Logged Out",
+      timer: 1000,
+      showConfirmButton: false,
+    });
     navigate("/pharmacyLogin");
   };
 
+  // Add medicine
+  const handleAddMedicine = async (e) => {
+    e.preventDefault();
+
+    if (
+      !newMedicine.medicineName ||
+      !newMedicine.medicineDescription ||
+      !newMedicine.quantity ||
+      !newMedicine.price
+    ) {
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Fields",
+        text: "Please fill all fields.",
+      });
+      return;
+    }
+
+    try {
+      await axios.post(
+        `http://localhost:8084/api/pharmacies/${pharmacyId}/add-medicine`,
+        newMedicine
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Medicine Added!",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+
+      setShowAddModal(false);
+      setNewMedicine({
+        medicineName: "",
+        medicineDescription: "",
+        quantity: "",
+        price: "",
+      });
+      fetchMedicines();
+    } catch (error) {
+      console.error("Error adding medicine:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Failed to Add",
+        text: "Please try again.",
+      });
+    }
+  };
+
+  // Update medicine
+  const handleUpdateMedicine = async (id) => {
+    if (!editMedicine) return;
+
+    try {
+      await axios.put(
+        `http://localhost:8084/api/pharmacies/${pharmacyId}/update-medicine/${id}`,
+        editMedicine
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Updated Successfully!",
+        timer: 1200,
+        showConfirmButton: false,
+      });
+
+      setEditMedicine(null);
+      fetchMedicines();
+    } catch (error) {
+      console.error("Error updating medicine:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: "Please try again.",
+      });
+    }
+  };
+
+  // Delete medicine
+  const handleDeleteMedicine = async (id) => {
+    const confirm = await Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      text: "This will permanently delete the medicine.",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (confirm.isConfirmed) {
+      try {
+        await axios.delete(
+          `http://localhost:8084/api/pharmacies/${pharmacyId}/delete-medicine/${id}`
+        );
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+
+        setMedicines(medicines.filter((med) => med.id !== id));
+      } catch (error) {
+        console.error("Error deleting medicine:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Delete Failed",
+          text: "Please try again.",
+        });
+      }
+    }
+  };
+
   return (
-    <div className="admin-container">
-      <h2>{pharmacyName} Dashboard</h2>
-      <button
-        onClick={handleLogout}
-        style={{
-          float: "right",
-          marginBottom: "15px",
-          backgroundColor: "red",
-          color: "white",
-        }}
-      >
-        Logout
-      </button>
+    <div className="pharmacy-dashboard">
+      <header className="dashboard-header">
+        <h1>{pharmacyName} Dashboard</h1>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
+      </header>
 
-      {/* Add Medicine Form */}
-      <form className="admin-form" onSubmit={handleAddMedicine}>
-        <h3>Add Medicine</h3>
-        <input
-          type="text"
-          placeholder="Medicine Name"
-          value={newMedicine.name}
-          onChange={(e) =>
-            setNewMedicine({ ...newMedicine, name: e.target.value })
-          }
-        />
-        <input
-          type="number"
-          placeholder="Quantity"
-          value={newMedicine.quantity}
-          onChange={(e) =>
-            setNewMedicine({ ...newMedicine, quantity: e.target.value })
-          }
-        />
-        <input
-          type="number"
-          placeholder="Price (LKR)"
-          value={newMedicine.price}
-          onChange={(e) =>
-            setNewMedicine({ ...newMedicine, price: e.target.value })
-          }
-        />
-        <button type="submit">Add Medicine</button>
-      </form>
+      <div className="dashboard-actions">
+        <button onClick={() => setShowAddModal(true)}>➕ Add Medicine</button>
+      </div>
 
-      {/* Medicines List */}
-      <div className="admin-table">
-        <h3>Medicines You Added</h3>
-        {medicines.length === 0 ? (
-          <p>No medicines added yet.</p>
+      <div className="dashboard-table">
+        <h2>Medicines Available</h2>
+        {loading ? (
+          <p className="loading">Loading...</p>
+        ) : medicines.length === 0 ? (
+          <p className="no-data">No medicines found.</p>
         ) : (
-          <table border="1" width="100%">
+          <table>
             <thead>
               <tr>
                 <th>Medicine Name</th>
+                <th>Description</th>
                 <th>Quantity</th>
-                <th>Price (LKR)</th>
-                <th>Action</th>
+                <th>Price (Rs.)</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {medicines.map((med) => (
-                <tr key={med.id}>
-                  <td>{med.medicineName}</td>
-                  <td>{med.quantity}</td>
-                  <td>{med.price}</td>
-                  <td>
-                    <button
-                      onClick={() => handleDelete(med.id)}
-                      style={{
-                        backgroundColor: "darkred",
-                        color: "white",
-                        padding: "5px 10px",
-                        border: "none",
-                        borderRadius: "4px",
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {medicines.map((med) =>
+                editMedicine && editMedicine.id === med.id ? (
+                  <tr key={med.id}>
+                    <td>
+                      <input
+                        type="text"
+                        value={editMedicine.medicineName}
+                        onChange={(e) => setEditMedicine({ ...editMedicine, medicineName: e.target.value })}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={editMedicine.medicineDescription}
+                        onChange={(e) => setEditMedicine({ ...editMedicine, medicineDescription: e.target.value })}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        value={editMedicine.quantity}
+                        onChange={(e) => setEditMedicine({ ...editMedicine, quantity: e.target.value })}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        value={editMedicine.price}
+                        onChange={(e) => setEditMedicine({ ...editMedicine, price: e.target.value })}
+                      />
+                    </td>
+                    <td>
+                      <button className="save-btn" onClick={() => handleUpdateMedicine(med.id)}>Save</button>
+                      <button className="cancel-btn" onClick={() => setEditMedicine(null)}>Cancel</button>
+                    </td>
+                  </tr>
+                ) : (
+                  <tr key={med.id}>
+                    <td>{med.medicineName}</td>
+                    <td>{med.medicineDescription}</td>
+                    <td>{med.quantity}</td>
+                    <td>{med.price}</td>
+                    <td>
+                      <button className="edit-btn" onClick={() => setEditMedicine(med)}>✏️ Edit</button>
+                      <button className="delete-btn" onClick={() => handleDeleteMedicine(med.id)}>🗑️ Delete</button>
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         )}
       </div>
+
+      {/* Add Medicine Modal */}
+      {showAddModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Add Medicine</h3>
+            <form onSubmit={handleAddMedicine}>
+              <input
+                type="text"
+                placeholder="Medicine Name"
+                value={newMedicine.medicineName}
+                onChange={(e) => setNewMedicine({ ...newMedicine, medicineName: e.target.value })}
+              />
+              <input
+                type="text"
+                placeholder="Description"
+                value={newMedicine.medicineDescription}
+                onChange={(e) => setNewMedicine({ ...newMedicine, medicineDescription: e.target.value })}
+              />
+              <input
+                type="number"
+                placeholder="Quantity"
+                value={newMedicine.quantity}
+                onChange={(e) => setNewMedicine({ ...newMedicine, quantity: e.target.value })}
+              />
+              <input
+                type="number"
+                placeholder="Price (Rs)"
+                value={newMedicine.price}
+                onChange={(e) => setNewMedicine({ ...newMedicine, price: e.target.value })}
+              />
+              <div className="modal-buttons">
+                <button type="submit" className="save-btn">Add</button>
+                <button type="button" className="cancel-btn" onClick={() => setShowAddModal(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
