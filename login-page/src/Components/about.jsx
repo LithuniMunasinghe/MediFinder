@@ -42,12 +42,12 @@ function AboutUs() {
           </li>
           <li>
             <NavLink to="/med" className={({ isActive }) => (isActive ? "active" : "")}>
-              Medicine
+              MediFinder
             </NavLink>
           </li>
           <li>
-           <NavLink to="/MediFinder" className={({ isActive }) => (isActive ? "active" : "")}>
-              MediFinder
+           <NavLink to="/MedicineSearch" className={({ isActive }) => (isActive ? "active" : "")}>
+              Medicine Search
            </NavLink>
           </li> 
            <li>

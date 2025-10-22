@@ -39,8 +39,8 @@ const Home = () => {
           <li><Link to="/doctorView">Doctors</Link></li>
           <li><Link to="/feedback">Feedback</Link></li>
           <li><Link to="/location">Location</Link></li>
-          <li><Link to="/med">Medicine</Link></li> 
-         <li><Link to="/MediFinder">MediFinder</Link></li>
+          <li><Link to="/med">MediFinder</Link></li> 
+         <li><Link to="/medicineSearch">Medicine Search</Link></li>
           <li>
             <Link
               to="/loginRegister"

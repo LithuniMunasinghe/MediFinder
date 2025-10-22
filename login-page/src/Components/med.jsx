@@ -40,7 +40,7 @@ export default function Med() {
           </li>
           <li>
             <NavLink to="/med" className={({ isActive }) => (isActive ? "active" : "")}>
-              Medicine
+              MediFinder
             </NavLink>
           </li>
           <li>
