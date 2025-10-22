@@ -46,8 +46,8 @@ function AboutUs() {
             </NavLink>
           </li>
           <li>
-           <NavLink to="/MedicineSearch" className={({ isActive }) => (isActive ? "active" : "")}>
-              Medicine Search
+           <NavLink to="/MediFinder" className={({ isActive }) => (isActive ? "active" : "")}>
+              MediFinder
            </NavLink>
           </li> 
            <li>

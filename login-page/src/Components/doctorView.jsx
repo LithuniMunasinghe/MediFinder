@@ -53,7 +53,7 @@ const DoctorTable = () => {
           <li><a href="/feedback">Feedback</a></li>
           <li><a href="/location">Location</a></li>
           <li><a href="/med">Medicine</a></li>
-          <li><a href="/medicineSearch">Medicine Search</a></li>
+          <li><a href="/mediFinder">MediFinder</a></li>
           <li><a href="/loginRegister">Logout</a></li>
         </ul>
       </header>
