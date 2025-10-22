@@ -37,6 +37,7 @@ public class PharmacyService {
         return inventoryRepository.findPharmaciesByMedicineNames(lowerNames);
     }
 
+
     //  Add a new pharmacy
     public Pharmacy addPharmacy(Pharmacy pharmacy) {
         return pharmacyRepository.save(pharmacy);

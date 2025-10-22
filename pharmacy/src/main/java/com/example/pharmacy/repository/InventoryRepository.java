@@ -14,9 +14,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     // For searching pharmacies by medicine names
     @Query("SELECT new com.example.pharmacy.dto.PharmacyDTO(p.name, m.name, i.quantity) " +
-            "FROM Inventory i " +
-            "JOIN i.pharmacy p " +
-            "JOIN i.medicine m " +
+            "FROM Inventory i JOIN i.pharmacy p JOIN i.medicine m " +
             "WHERE LOWER(m.name) IN :medicineNames")
     List<PharmacyDTO> findPharmaciesByMedicineNames(@Param("medicineNames") List<String> medicineNames);
 
