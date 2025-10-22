@@ -15,6 +15,7 @@ public class Pharmacy {
     private String name;
     private String address;
     private String phone;
+    private String password;
 
     @OneToMany(mappedBy = "pharmacy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("pharmacy-inventory")
@@ -28,6 +29,8 @@ public class Pharmacy {
     public void setAddress(String address) { this.address = address; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
     public List<Inventory> getInventories() { return inventories; }
     public void setInventories(List<Inventory> inventories) { this.inventories = inventories; }
 }
