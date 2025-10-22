@@ -110,7 +110,10 @@ public class PharmacyService {
         }
         return inventoryRepository.save(inventory);
     }
-
+    public Pharmacy login(String name, String password) {
+        return pharmacyRepository.findByNameAndPassword(name, password)
+                .orElse(null); // returns null if login fails
+    }
 
 }
 

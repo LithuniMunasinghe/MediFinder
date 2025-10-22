@@ -3,6 +3,7 @@ package com.example.pharmacy.controller;
 import com.example.pharmacy.dto.InventoryDTO;
 import com.example.pharmacy.dto.MedicineInventoryDTO;
 import com.example.pharmacy.dto.PharmacyDTO;
+import com.example.pharmacy.dto.PharmacyLoginRequest;
 import com.example.pharmacy.entity.Inventory;
 import com.example.pharmacy.entity.Medicine;
 import com.example.pharmacy.entity.Pharmacy;
@@ -11,6 +12,7 @@ import com.example.pharmacy.repository.MedicineRepository;
 import com.example.pharmacy.repository.PharmacyRepository;
 import com.example.pharmacy.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -80,6 +82,17 @@ public class PharmacyController {
                                     @PathVariable Long inventoryId,
                                     @RequestBody InventoryDTO dto) {
         return pharmacyService.updateMedicineInPharmacy(pharmacyId, inventoryId, dto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody PharmacyLoginRequest request) {
+        Pharmacy pharmacy = pharmacyService.login(request.getName(), request.getPassword());
+
+        if (pharmacy != null) {
+            return ResponseEntity.ok(pharmacy);  // login success
+        } else {
+            return ResponseEntity.status(401).body("Invalid name or password"); // login failed
+        }
     }
 
 }
