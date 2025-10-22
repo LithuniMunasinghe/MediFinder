@@ -18,8 +18,9 @@ body {
 --------------------------- */
 .pharmacy-dashboard {
   max-width: 1200px;
-  margin: 30px auto;
-  padding: 20px;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px;
+  background-color: #f4f6f8;
 }
 
 /* ---------------------------
@@ -34,6 +35,7 @@ body {
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.1);
   color: white;
+  margin-bottom: 10px; /* slight space below header */
 }
 
 .dashboard-header h1 {
@@ -60,9 +62,12 @@ body {
    Action Buttons
 --------------------------- */
 .dashboard-actions {
-  margin: 25px 0;
   display: flex;
-  gap: 15px;
+  justify-content: center; /* centers Add Medicine */
+  align-items: center;
+  margin: 8px 0;
+  padding: 0;
+  padding-bottom: 20px;
 }
 
 .dashboard-actions button {
@@ -89,14 +94,18 @@ body {
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.05);
-  padding: 20px;
+  padding: 10px 20px 20px 20px;
+  margin-top: 0;
+  border-top: 1px solid transparent; /* stops margin collapse */
 }
 
 .dashboard-table h2 {
-  margin-bottom: 15px;
+  margin: 0 0 15px 0 !important;
+  padding: 0;
   color: #333;
   font-size: 1.4rem;
   font-weight: 600;
+  text-align: center;
 }
 
 .dashboard-table table {
@@ -118,7 +127,7 @@ body {
 }
 
 .dashboard-table tbody tr:hover {
-  background-color: #dfe4e6;
+  background-color: #c9e0ea;
   transition: background-color 0.3s;
 }
 
@@ -127,7 +136,7 @@ body {
 --------------------------- */
 .edit-btn, .save-btn, .cancel-btn, .delete-btn {
   padding: 6px 12px;
-  border: none; /* remove borders */
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
@@ -146,27 +155,27 @@ body {
 
 /* Blue for save buttons */
 .save-btn {
-  background-color: #2196F3; /* blue */
+  background-color: #2196F3;
   color: white;
 }
 
 .save-btn:hover {
-  background-color: #1976D2; /* darker blue on hover */
+  background-color: #1976D2;
 }
 
 /* Red delete/cancel buttons */
 .cancel-btn {
-  background-color: #f44336; /* red */
+  background-color: #f44336;
   color: white;
-  border: none; /* ensure no border */
+  border: none;
 }
 
 .cancel-btn:hover {
-  background-color: #d32f2f; /* darker red on hover */
+  background-color: #d32f2f;
 }
 
 .delete-btn {
-  background-color: #e53935; /* red */
+  background-color: #e53935;
   color: white;
 }
 
@@ -241,4 +250,26 @@ body {
 @keyframes slideIn {
   from {transform: translateY(-20px);}
   to {transform: translateY(0);}
+}
+
+/* ---------------------------
+   FINAL GAP FIX
+--------------------------- */
+header, .dashboard-header, .pharmacy-dashboard {
+  margin: 0 !important;
+  padding-top: 30px !important;
+}
+
+.dashboard-header {
+  margin-bottom: 20px !important;
+}
+
+.dashboard-actions {
+  margin-top: 25px !important;
+  margin-bottom: 5px !important;
+}
+
+.dashboard-table {
+  margin-top: 0 !important;
+  padding-top: 20px !important;
 }
