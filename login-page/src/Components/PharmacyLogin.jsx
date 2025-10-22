@@ -27,35 +27,46 @@ const PharmacyLogin = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8084/loginPharmacy", {
-        name: pharmacyName,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://localhost:8084/api/pharmacies/login",
+        {
+          name: pharmacyName,
+          password: password,
+        }
+      );
 
-      if (response.data.success) {
+      // If login successful, backend returns pharmacy object
+      if (response.status === 200 && response.data) {
         Swal.fire({
           icon: "success",
           title: "Login Successful!",
-          text: `Welcome, ${pharmacyName}`,
+          text: `Welcome, ${response.data.name}`,
           timer: 1500,
           showConfirmButton: false,
         });
-        localStorage.setItem("pharmacyName", pharmacyName);
+
+        // Save pharmacy info for dashboard
+        localStorage.setItem("pharmacyId", response.data.id);
+        localStorage.setItem("pharmacyName", response.data.name);
+
         navigate("/pharmacyDashboard");
-      } else {
+      }
+    } catch (error) {
+      console.error("Error during Pharmacy Login:", error);
+
+      if (error.response && error.response.status === 401) {
         Swal.fire({
           icon: "error",
           title: "Invalid Credentials",
           text: "Please check your pharmacy name and password.",
         });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: "Please try again later.",
+        });
       }
-    } catch (error) {
-      console.error("Error during Pharmacy Login:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Login Failed",
-        text: "Please try again later.",
-      });
     }
   };
 

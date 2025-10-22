@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/adminPharmacy.css"; // reuse same CSS for simplicity
+import axios from "axios";
+import "../css/adminPharmacy.css"; // reuse same CSS
 
 const PharmacyDashboard = () => {
   const navigate = useNavigate();
-  const pharmacyName = localStorage.getItem("loggedPharmacy");
+  const pharmacyId = localStorage.getItem("pharmacyId");
+  const pharmacyName = localStorage.getItem("pharmacyName");
+
   const [medicines, setMedicines] = useState([]);
   const [newMedicine, setNewMedicine] = useState({
     name: "",
@@ -12,51 +15,86 @@ const PharmacyDashboard = () => {
     price: "",
   });
 
+  // Fetch medicines from backend
   useEffect(() => {
-    if (!pharmacyName) {
+    if (!pharmacyId) {
       navigate("/pharmacyLogin");
     } else {
-      const storedMedicines =
-        JSON.parse(localStorage.getItem(`medicines_${pharmacyName}`)) || [];
-      setMedicines(storedMedicines);
+      fetchMedicines();
     }
-  }, [pharmacyName, navigate]);
+  }, [pharmacyId, navigate]);
 
-  // handle add medicine
-  const handleAddMedicine = (e) => {
+  const fetchMedicines = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8084/api/pharmacies/${pharmacyId}/medicines`
+      );
+      setMedicines(response.data);
+    } catch (error) {
+      console.error("Error fetching medicines:", error);
+    }
+  };
+
+  // Add medicine
+  const handleAddMedicine = async (e) => {
     e.preventDefault();
-
     if (!newMedicine.name || !newMedicine.quantity || !newMedicine.price) {
       alert("Please fill all fields.");
       return;
     }
 
-    const updated = [...medicines, { id: Date.now(), ...newMedicine }];
-    setMedicines(updated);
-    localStorage.setItem(`medicines_${pharmacyName}`, JSON.stringify(updated));
-    setNewMedicine({ name: "", quantity: "", price: "" });
+    try {
+      const payload = {
+        medicineId: 0, // You might need to fetch medicine ID from medicine table or create new
+        quantity: parseInt(newMedicine.quantity),
+        price: parseFloat(newMedicine.price),
+      };
+
+      // For simplicity, we assume the medicine is already created in DB.
+      // Otherwise, you need a create-medicine API first.
+
+      await axios.post(
+        `http://localhost:8084/api/pharmacies/${pharmacyId}/add-medicine`,
+        payload
+      );
+
+      setNewMedicine({ name: "", quantity: "", price: "" });
+      fetchMedicines(); // refresh the list
+    } catch (error) {
+      console.error("Error adding medicine:", error);
+    }
   };
 
-  // handle delete medicine
-  const handleDelete = (id) => {
-    const updated = medicines.filter((med) => med.id !== id);
-    setMedicines(updated);
-    localStorage.setItem(`medicines_${pharmacyName}`, JSON.stringify(updated));
+  // Delete medicine
+  const handleDelete = async (inventoryId) => {
+    try {
+      await axios.delete(
+        `http://localhost:8084/api/pharmacies/${pharmacyId}/update-medicine/${inventoryId}`
+      );
+      fetchMedicines();
+    } catch (error) {
+      console.error("Error deleting medicine:", error);
+    }
   };
 
-  // logout
+  // Logout
   const handleLogout = () => {
-    localStorage.removeItem("loggedPharmacy");
+    localStorage.removeItem("pharmacyId");
+    localStorage.removeItem("pharmacyName");
     navigate("/pharmacyLogin");
   };
 
   return (
     <div className="admin-container">
       <h2>{pharmacyName} Dashboard</h2>
-
       <button
         onClick={handleLogout}
-        style={{ float: "right", marginBottom: "15px", backgroundColor: "red", color: "white" }}
+        style={{
+          float: "right",
+          marginBottom: "15px",
+          backgroundColor: "red",
+          color: "white",
+        }}
       >
         Logout
       </button>
@@ -100,7 +138,7 @@ const PharmacyDashboard = () => {
           <table border="1" width="100%">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Medicine Name</th>
                 <th>Quantity</th>
                 <th>Price (LKR)</th>
                 <th>Action</th>
@@ -109,7 +147,7 @@ const PharmacyDashboard = () => {
             <tbody>
               {medicines.map((med) => (
                 <tr key={med.id}>
-                  <td>{med.name}</td>
+                  <td>{med.medicineName}</td>
                   <td>{med.quantity}</td>
                   <td>{med.price}</td>
                   <td>
