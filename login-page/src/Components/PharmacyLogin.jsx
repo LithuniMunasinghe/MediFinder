@@ -11,7 +11,7 @@ const PharmacyLogin = () => {
   const navigate = useNavigate();
 
   const toggleForm = () => {
-    setIsActive(prev => !prev);
+    setIsActive((prev) => !prev);
   };
 
   const handleLogin = async (e) => {
@@ -35,7 +35,6 @@ const PharmacyLogin = () => {
         }
       );
 
-      // If login successful, backend returns pharmacy object
       if (response.status === 200 && response.data) {
         Swal.fire({
           icon: "success",
@@ -45,7 +44,6 @@ const PharmacyLogin = () => {
           showConfirmButton: false,
         });
 
-        // Save pharmacy info for dashboard
         localStorage.setItem("pharmacyId", response.data.id);
         localStorage.setItem("pharmacyName", response.data.name);
 
@@ -72,7 +70,6 @@ const PharmacyLogin = () => {
 
   return (
     <div className={`container ${isActive ? "active" : ""}`} id="container">
-
       {/* Pharmacy Login Form */}
       <div className="form-container sign-in visible">
         <form onSubmit={handleLogin}>
@@ -89,7 +86,18 @@ const PharmacyLogin = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Login</button>
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+
+          {/* Back Button under Login */}
+          <button
+            type="button"
+            className="back-btn"
+            onClick={() => navigate("/loginRegister")}
+          >
+            ← Back
+          </button>
         </form>
       </div>
 
