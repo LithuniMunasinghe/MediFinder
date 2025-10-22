@@ -63,5 +63,53 @@ public class PharmacyService {
         return inventoryRepository.findMedicinesWithInventoryByPharmacy(pharmacyId);
     }
 
+    // Update a pharmacy
+    public Pharmacy updatePharmacy(Long pharmacyId, Pharmacy updatedPharmacy) {
+        Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId)
+                .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
+
+        pharmacy.setName(updatedPharmacy.getName());
+        pharmacy.setAddress(updatedPharmacy.getAddress());
+        pharmacy.setPhone(updatedPharmacy.getPhone());
+        pharmacy.setPassword(updatedPharmacy.getPassword()); // if applicable
+
+        return pharmacyRepository.save(pharmacy);
+    }
+
+    // Delete a pharmacy
+    public void deletePharmacy(Long pharmacyId) {
+        Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId)
+                .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
+        pharmacyRepository.delete(pharmacy);
+    }
+
+    // Get all pharmacies
+    public List<Pharmacy> getAllPharmacies() {
+        return pharmacyRepository.findAll();
+    }
+
+    // Update medicine in a pharmacy
+    public Inventory updateMedicineInPharmacy(Long pharmacyId, Long inventoryId, InventoryDTO dto) {
+        // Get the pharmacy first
+        Pharmacy pharmacy = pharmacyRepository.findById(pharmacyId)
+                .orElseThrow(() -> new RuntimeException("Pharmacy not found"));
+        // Get the existing inventory
+        Inventory inventory = inventoryRepository.findById(inventoryId)
+                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+        // Make sure this inventory belongs to the pharmacy
+        if (!inventory.getPharmacy().getId().equals(pharmacyId)) {
+            throw new RuntimeException("This inventory does not belong to the specified pharmacy");
+        }
+        // Update fields if provided
+        if (dto.getQuantity() != null) {
+            inventory.setQuantity(dto.getQuantity());
+        }
+        if (dto.getPrice() != null) {
+            inventory.setPrice(dto.getPrice());
+        }
+        return inventoryRepository.save(inventory);
+    }
+
+
 }
 

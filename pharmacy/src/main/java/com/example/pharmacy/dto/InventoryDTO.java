@@ -2,14 +2,14 @@ package com.example.pharmacy.dto;
 
 public class InventoryDTO {
 
-    private Long medicineId;  // ID of the medicine to add
-    private int quantity;     // Quantity of the medicine
-    private double price;     // Price per unit
+    private Long medicineId;       // ID of the medicine to add
+    private Integer quantity;      // Quantity of the medicine (wrapper)
+    private Double price;          // Price per unit (wrapper)
 
     public InventoryDTO() {
     }
 
-    public InventoryDTO(Long medicineId, int quantity, double price) {
+    public InventoryDTO(Long medicineId, Integer quantity, Double price) {
         this.medicineId = medicineId;
         this.quantity = quantity;
         this.price = price;
@@ -24,19 +24,19 @@ public class InventoryDTO {
         this.medicineId = medicineId;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

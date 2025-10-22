@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="cfa74fc4-0d94-4094-9d37-83d02b69bc01" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< Updated upstream
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pharmacy/controller/PharmacyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pharmacy/controller/PharmacyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pharmacy/dto/InventoryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pharmacy/dto/InventoryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pharmacy/service/PharmacyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pharmacy/service/PharmacyService.java" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -27,11 +27,13 @@ public class PharmacyController {
         this.pharmacyService = pharmacyService;
     }
 
+    //add pharmacies
     @PostMapping("/add")
     public Pharmacy addPharmacy(@RequestBody Pharmacy pharmacy) {
         return pharmacyService.addPharmacy(pharmacy);
     }
 
+    //add medicine to pharmacy
     @PostMapping("/{pharmacyId}/add-medicine")
     public Inventory addMedicineToPharmacy(
             @PathVariable Long pharmacyId,
@@ -53,5 +55,32 @@ public class PharmacyController {
                 .collect(Collectors.toList());
         return pharmacyService.searchPharmaciesByMedicineNames(medicineList);
     }
+
+    // Update existing pharmacy
+    @PutMapping("/{pharmacyId}")
+    public Pharmacy updatePharmacy(@PathVariable Long pharmacyId, @RequestBody Pharmacy pharmacy) {
+        return pharmacyService.updatePharmacy(pharmacyId, pharmacy);
+    }
+
+    // Delete a pharmacy
+    @DeleteMapping("/{pharmacyId}")
+    public void deletePharmacy(@PathVariable Long pharmacyId) {
+        pharmacyService.deletePharmacy(pharmacyId);
+    }
+
+    // View all pharmacies
+    @GetMapping("/all/pharmacies")
+    public List<Pharmacy> getAllPharmacies() {
+        return pharmacyService.getAllPharmacies();
+    }
+
+    // Update medicine in a pharmacy
+    @PutMapping("/{pharmacyId}/update-medicine/{inventoryId}")
+    public Inventory updateMedicine(@PathVariable Long pharmacyId,
+                                    @PathVariable Long inventoryId,
+                                    @RequestBody InventoryDTO dto) {
+        return pharmacyService.updateMedicineInPharmacy(pharmacyId, inventoryId, dto);
+    }
+
 }
 
