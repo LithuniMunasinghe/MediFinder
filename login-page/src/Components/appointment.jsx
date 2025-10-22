@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import "../css/appointment.css";
 import axios from "axios";
 
 const AppointmentPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { doctorId, doctorName, speciality, doctorCharge } = location.state || {};
   
   const [patientName, setPatientName] = useState("");
@@ -47,6 +48,14 @@ const AppointmentPage = () => {
   };
 
   return (
+      
+     <>
+      {/* Move back button outside the wrapper */}
+      <button className="back-btn" onClick={() => navigate("/doctorView")}>
+        &larr; Go Back
+      </button>
+      
+
     <div className="appointment-wrapper">
       
       <form onSubmit={handleSubmit} className="appointment-form">
@@ -81,6 +90,7 @@ const AppointmentPage = () => {
         <button type="submit" className="submit-btn">Book Appointment</button>
       </form>
     </div>
+    </>
   );
 };
 
