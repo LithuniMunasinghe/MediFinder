@@ -1,45 +1,102 @@
 import React, { useState } from "react";
+import "../css/loginRegister.css";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../css/pharmacyLogin.css";
+import Swal from "sweetalert2";
 
 const PharmacyLogin = () => {
   const [pharmacyName, setPharmacyName] = useState("");
   const [password, setPassword] = useState("");
+  const [isActive, setIsActive] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
-    const found = pharmacies.find(
-      (p) => p.name === pharmacyName && p.password === password
-    );
+  const toggleForm = () => {
+    setIsActive(prev => !prev);
+  };
 
-    if (found) {
-      localStorage.setItem("pharmacyName", pharmacyName);
-      navigate("/pharmacyDashboard");
-    } else {
-      alert("Invalid pharmacy name or password");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (!pharmacyName || !password) {
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Fields",
+        text: "Please enter both Pharmacy Name and Password.",
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8084/loginPharmacy", {
+        name: pharmacyName,
+        password: password,
+      });
+
+      if (response.data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome, ${pharmacyName}`,
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        localStorage.setItem("pharmacyName", pharmacyName);
+        navigate("/pharmacyDashboard");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Credentials",
+          text: "Please check your pharmacy name and password.",
+        });
+      }
+    } catch (error) {
+      console.error("Error during Pharmacy Login:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: "Please try again later.",
+      });
     }
   };
 
   return (
-    <div className="pharmacy-login-wrapper">
-      <h2>Pharmacy Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Pharmacy Name"
-          value={pharmacyName}
-          onChange={(e) => setPharmacyName(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className={`container ${isActive ? "active" : ""}`} id="container">
+
+      {/* Pharmacy Login Form */}
+      <div className="form-container sign-in visible">
+        <form onSubmit={handleLogin}>
+          <h1>Pharmacy Login</h1>
+          <input
+            type="text"
+            placeholder="Pharmacy Name"
+            value={pharmacyName}
+            onChange={(e) => setPharmacyName(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+
+      {/* Toggle Panel */}
+      <div className="toggle-container">
+        <div className="toggle">
+          <div className="toggle-panel toggle-left">
+            <h1>Welcome Pharmacies!</h1>
+            <p>Login to manage your medicines and account</p>
+            <button onClick={toggleForm}>Login</button>
+          </div>
+          <div className="toggle-panel toggle-right">
+            <h1>MEDI-FINDER</h1>
+            <h1>Hello!</h1>
+            <p>Only registered pharmacies can login here</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
