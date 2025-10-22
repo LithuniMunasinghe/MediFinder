@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserMd, FaUsers, FaCalendarCheck } from "react-icons/fa";
+import { FaUserMd, FaUsers, FaCalendarCheck, FaClinicMedical } from "react-icons/fa";
 import "../css/admin.css";
 
 const AdminHomePage = () => {
@@ -36,6 +36,12 @@ const AdminHomePage = () => {
               <h3>Manage Appointments</h3>
             </div>
           </div>
+          
+            {/* Manage Pharmacies */}
+            <div className="manage-box" onClick={() => navigate("/AdminPharmacyManage")}>
+              <FaClinicMedical size={40} className="icon pharmacy" />
+              <h3>Manage Pharmacy</h3>
+            </div>
 
           <button className="logout-btn" onClick={() => navigate("/loginRegister")}>Logout</button>
         </section>
