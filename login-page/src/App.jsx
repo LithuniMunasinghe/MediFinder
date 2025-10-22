@@ -43,7 +43,7 @@ function App() {
         <Route path="/location" element={<LocationPage />} />
         <Route path="/pharmacyLogin" element={<PharmacyLogin />} />
         <Route path="/pharmacyDashboard" element={<PharmacyDashboard />} />
-        <Route path="/adminPharmacies" element={<AdminPharmacyManage />} />
+        <Route path="/AdminPharmacyManage" element={<AdminPharmacyManage />} />
       </Routes>
     </Router>
   );
