@@ -2,8 +2,12 @@
   background: url('../images/medicine-bg.jpg') no-repeat center center;
   background-size: cover;
   min-height: 100vh;
+  display: flex;                 /* enables flexbox */
+  justify-content: center;       /* horizontal center */
+  align-items: center;           /* vertical center */
   font-family: Arial, sans-serif;
 }
+
 
 .navbar {
   height: 100px;
@@ -116,12 +120,18 @@
 }
 
 .search-container {
-  max-width: 600px;
-  margin: 300px auto 0 auto;
-  padding: 20px;
+  width: 700px; /* or max-width: 600px; */
+  padding: 10px;
   background-color: rgba(255,255,255,0.9);
   border-radius: 10px;
   text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* nice floating effect */
+}
+
+.search-container h2 {
+  margin: 10px;         /* remove top and bottom margin */
+  padding: 10px;         /* adjust this value as needed */
+  color: #333;
 }
 
 .medicine-form input {
@@ -134,6 +144,7 @@
 
 .medicine-form button {
   padding: 10px 20px;
+  margin-top: 20px;
   border: none;
   border-radius: 5px;
   background-color: #007bff;
@@ -147,7 +158,11 @@
 }
 
 .result-card {
+  margin-left: 40px;
+  max-width: 600px;
+  border: 1px solid #524d4d;
   background-color: #f1f1f1;
+  color: #525353;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
