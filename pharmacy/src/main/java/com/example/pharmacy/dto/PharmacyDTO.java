@@ -1,9 +1,5 @@
 package com.example.pharmacy.dto;
 
-/**
- * Data Transfer Object (DTO) for displaying pharmacy details
- * along with medicine name and quantity available.
- */
 public class PharmacyDTO {
 
     private String pharmacyName;

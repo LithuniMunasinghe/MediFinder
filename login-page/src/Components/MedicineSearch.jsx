@@ -7,29 +7,42 @@ import "../css/home.css";
 const MedicineSearch = () => {
   const [medicineName, setMedicineName] = useState("");
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    if (!medicineName) return;
+    if (!medicineName.trim()) return;
 
-    // Fetch stored pharmacies with medicines
-    const pharmacies = JSON.parse(localStorage.getItem("pharmacies")) || [];
+    setLoading(true);
+    setError("");
+    setResults([]);
 
-    // Search all medicines across pharmacies
-    const found = [];
-    pharmacies.forEach((pharmacy) => {
-      pharmacy.medicines?.forEach((med) => {
-        if (med.name.toLowerCase().includes(medicineName.toLowerCase())) {
-          found.push({
-            medicine: med.name,
-            pharmacy: pharmacy.name,
-            location: pharmacy.location || "Not provided",
-          });
-        }
-      });
-    });
+    try {
+      // Call backend search API
+      const response = await fetch(
+        `http://localhost:8084/api/pharmacies/search?medicines=${encodeURIComponent(
+          medicineName
+        )}`
+      );
 
-    setResults(found);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data from server");
+      }
+
+      const data = await response.json();
+
+      if (data.length === 0) {
+        setError("No results found");
+      } else {
+        setResults(data);
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong while searching");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,19 +75,19 @@ const MedicineSearch = () => {
           <button type="submit">Search</button>
         </form>
 
+        {/* Loading and Error */}
+        {loading && <p>Loading...</p>}
+        {error && <p className="no-results">{error}</p>}
+
         {/* Search Results */}
         <div className="results">
-          {results.length > 0 ? (
-            results.map((res, index) => (
-              <div key={index} className="result-card">
-                <p><strong>Medicine:</strong> {res.medicine}</p>
-                <p><strong>Pharmacy:</strong> {res.pharmacy}</p>
-                <p><strong>Location:</strong> {res.location}</p>
-              </div>
-            ))
-          ) : (
-            <p className="no-results">No results found</p>
-          )}
+          {results.map((res, index) => (
+            <div key={index} className="result-card">
+              <p><strong>Medicine:</strong> {res.medicineName}</p>
+              <p><strong>Pharmacy:</strong> {res.pharmacyName}</p>
+              <p><strong>Quantity:</strong> {res.quantity}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
