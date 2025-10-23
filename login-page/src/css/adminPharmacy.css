@@ -17,6 +17,7 @@
 
 /* Page Heading */
 .pharmacy-wrapper h2 {
+  padding: 20px;
   font-weight: 600;
   margin-bottom: 20px;
   color: #333;
@@ -98,11 +99,13 @@
 
 /* Edit/Delete Button Colors */
 .pharmacy-wrapper .btn-outline-primary {
-  color: #007bff;
-  border-color: #007bff;
+  background-color: #f3ae23;
+  color: #f7f8f9;
+  border-color: #f5f6f8;
 }
 
 .pharmacy-wrapper .btn-outline-danger {
-  color: #dc3545;
-  border-color: #dc3545;
+  background-color: red;
+  color: #f6f6f6;
+  border-color: #fbfbfb;
 }

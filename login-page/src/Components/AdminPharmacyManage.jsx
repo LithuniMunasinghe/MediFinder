@@ -3,6 +3,7 @@ import { Table, Button, Alert, Spinner, Modal, Form } from "react-bootstrap";
 import { FaStore, FaTrash, FaEdit, FaArrowLeft, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "../css/adminPharmacy.css";
 
 const PharmacyManagement = () => {
@@ -16,8 +17,8 @@ const PharmacyManagement = () => {
   const [newPharmacy, setNewPharmacy] = useState({
     name: "",
     address: "",
-    contact: "",
-    email: "",
+    phone: "",
+    password: "",
   });
 
   const navigate = useNavigate();
@@ -27,9 +28,10 @@ const PharmacyManagement = () => {
     const fetchPharmacies = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:8080/pharmacies");
+        const response = await axios.get("http://localhost:8084/api/pharmacies");
         setPharmacies(response.data);
       } catch (error) {
+        console.error("Error fetching pharmacies:", error);
         setError("There was an error fetching the pharmacies data.");
       } finally {
         setLoading(false);
@@ -45,47 +47,106 @@ const PharmacyManagement = () => {
 
   // Add Pharmacy
   const handleAddPharmacy = async () => {
-    if (!newPharmacy.name || !newPharmacy.address || !newPharmacy.contact || !newPharmacy.email) {
-      alert("All fields are required!");
+    if (!newPharmacy.name || !newPharmacy.address || !newPharmacy.phone || !newPharmacy.password) {
+      Swal.fire({
+        icon: "warning",
+        title: "Missing Fields",
+        text: "All fields are required!",
+      });
       return;
     }
     try {
-      const response = await axios.post("http://localhost:8080/pharmacies", newPharmacy);
+      const response = await axios.post("http://localhost:8084/api/pharmacies/add", newPharmacy);
       setPharmacies([...pharmacies, response.data]);
       setShowAddModal(false);
-      setNewPharmacy({ name: "", address: "", contact: "", email: "" });
+      setNewPharmacy({ name: "", address: "", phone: "", password: "" });
+      Swal.fire({
+        icon: "success",
+        title: "Added!",
+        text: "Pharmacy added successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error adding pharmacy:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Could not add pharmacy. Check console for details.",
+      });
     }
   };
 
-  // Open edit modal
+  // Open Edit Modal
   const openEditModal = (pharmacy) => {
     setSelectedPharmacy(pharmacy);
-    setNewPharmacy(pharmacy);
+    setNewPharmacy({
+      name: pharmacy.name,
+      address: pharmacy.address,
+      phone: pharmacy.phone,
+      password: pharmacy.password || "",
+    });
     setShowEditModal(true);
   };
 
   // Update Pharmacy
   const handleUpdatePharmacy = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/pharmacies/${selectedPharmacy.id}`, newPharmacy);
+      const response = await axios.put(
+        `http://localhost:8084/api/pharmacies/${selectedPharmacy.id}`,
+        newPharmacy
+      );
       setPharmacies((prev) =>
         prev.map((ph) => (ph.id === selectedPharmacy.id ? response.data : ph))
       );
       setShowEditModal(false);
+      Swal.fire({
+        icon: "success",
+        title: "Updated!",
+        text: "Pharmacy updated successfully.",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error updating pharmacy:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Failed",
+        text: "Could not update pharmacy. Check console for details.",
+      });
     }
   };
 
   // Delete Pharmacy
   const handleDeletePharmacy = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/pharmacies/${id}`);
-      setPharmacies(pharmacies.filter((ph) => ph.id !== id));
-    } catch (error) {
-      console.error("Error deleting pharmacy:", error);
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This will permanently delete the pharmacy.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await axios.delete(`http://localhost:8084/api/pharmacies/${id}`);
+        setPharmacies(pharmacies.filter((ph) => ph.id !== id));
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Pharmacy deleted successfully.",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        console.error("Error deleting pharmacy:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: "Could not delete pharmacy. Check console for details.",
+        });
+      }
     }
   };
 
@@ -115,40 +176,30 @@ const PharmacyManagement = () => {
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>#</th>
                 <th>Pharmacy</th>
                 <th>Address</th>
-                <th>Contact</th>
-                <th>Email</th>
+                <th>Phone</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {pharmacies.map((pharmacy, index) => (
                 <tr key={pharmacy.id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <FaStore className="text-success me-2" /> {pharmacy.name}
-                  </td>
+                  <td><FaStore className="text-success me-2" /> {pharmacy.name}</td>
                   <td>{pharmacy.address}</td>
-                  <td>{pharmacy.contact}</td>
-                  <td>{pharmacy.email}</td>
+                  <td>{pharmacy.phone}</td>
                   <td>
                     <Button
                       variant="outline-primary"
                       size="sm"
                       className="me-2"
                       onClick={() => openEditModal(pharmacy)}
-                    >
-                      <FaEdit />
-                    </Button>
+                    ><FaEdit /></Button>
                     <Button
                       variant="outline-danger"
                       size="sm"
                       onClick={() => handleDeletePharmacy(pharmacy.id)}
-                    >
-                      <FaTrash />
-                    </Button>
+                    ><FaTrash /></Button>
                   </td>
                 </tr>
               ))}
@@ -164,11 +215,11 @@ const PharmacyManagement = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            {["name", "address", "contact", "email"].map((field) => (
+            {["name", "address", "phone", "password"].map((field) => (
               <Form.Group className="mb-3" key={field}>
                 <Form.Label>{field.charAt(0).toUpperCase() + field.slice(1)}</Form.Label>
                 <Form.Control
-                  type="text"
+                  type={field === "password" ? "password" : "text"}
                   name={field}
                   value={newPharmacy[field]}
                   onChange={handleInputChange}
@@ -178,12 +229,8 @@ const PharmacyManagement = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleAddPharmacy}>
-            Add Pharmacy
-          </Button>
+          <Button variant="secondary" onClick={() => setShowAddModal(false)}>Close</Button>
+          <Button variant="primary" onClick={handleAddPharmacy}>Add Pharmacy</Button>
         </Modal.Footer>
       </Modal>
 
@@ -194,11 +241,11 @@ const PharmacyManagement = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            {["name", "address", "contact", "email"].map((field) => (
+            {["name", "address", "phone", "password"].map((field) => (
               <Form.Group className="mb-3" key={field}>
                 <Form.Label>{field.charAt(0).toUpperCase() + field.slice(1)}</Form.Label>
                 <Form.Control
-                  type="text"
+                  type={field === "password" ? "password" : "text"}
                   name={field}
                   value={newPharmacy[field]}
                   onChange={handleInputChange}
@@ -208,12 +255,8 @@ const PharmacyManagement = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleUpdatePharmacy}>
-            Update Pharmacy
-          </Button>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>Close</Button>
+          <Button variant="primary" onClick={handleUpdatePharmacy}>Update Pharmacy</Button>
         </Modal.Footer>
       </Modal>
     </div>

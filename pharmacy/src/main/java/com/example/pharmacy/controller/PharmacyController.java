@@ -20,19 +20,21 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/pharmacies")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PharmacyController {
 
     private final PharmacyService pharmacyService;
 
+    @Autowired
     public PharmacyController(PharmacyService pharmacyService) {
         this.pharmacyService = pharmacyService;
     }
 
     //add pharmacies
     @PostMapping("/add")
-    public Pharmacy addPharmacy(@RequestBody Pharmacy pharmacy) {
-        return pharmacyService.addPharmacy(pharmacy);
+    public ResponseEntity<Pharmacy> addPharmacy(@RequestBody Pharmacy pharmacy) {
+        Pharmacy saved = pharmacyService.addPharmacy(pharmacy);
+        return ResponseEntity.ok(saved);
     }
 
     //add medicine to pharmacy
@@ -60,20 +62,23 @@ public class PharmacyController {
 
     // Update existing pharmacy
     @PutMapping("/{pharmacyId}")
-    public Pharmacy updatePharmacy(@PathVariable Long pharmacyId, @RequestBody Pharmacy pharmacy) {
-        return pharmacyService.updatePharmacy(pharmacyId, pharmacy);
+    public ResponseEntity<Pharmacy> updatePharmacy(@PathVariable Long pharmacyId, @RequestBody Pharmacy pharmacy) {
+        Pharmacy updated = pharmacyService.updatePharmacy(pharmacyId, pharmacy);
+        return ResponseEntity.ok(updated);
     }
 
     // Delete a pharmacy
     @DeleteMapping("/{pharmacyId}")
-    public void deletePharmacy(@PathVariable Long pharmacyId) {
+    public ResponseEntity<String> deletePharmacy(@PathVariable Long pharmacyId) {
         pharmacyService.deletePharmacy(pharmacyId);
+        return ResponseEntity.ok("Pharmacy deleted successfully");
     }
 
     // View all pharmacies
-    @GetMapping("/all/pharmacies")
-    public List<Pharmacy> getAllPharmacies() {
-        return pharmacyService.getAllPharmacies();
+    @GetMapping
+    public ResponseEntity<List<Pharmacy>> getAllPharmacies() {
+        List<Pharmacy> pharmacies = pharmacyService.getAllPharmacies();
+        return ResponseEntity.ok(pharmacies);
     }
 
     // Update medicine in a pharmacy
