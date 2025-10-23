@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "../css/loginRegister.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import "../css/pharmacyLogin.css";
 
 const PharmacyLogin = () => {
   const [pharmacyName, setPharmacyName] = useState("");
@@ -74,30 +74,25 @@ const PharmacyLogin = () => {
       <div className="form-container sign-in visible">
         <form onSubmit={handleLogin}>
           <h1>Pharmacy Login</h1>
+
           <input
             type="text"
             placeholder="Pharmacy Name"
             value={pharmacyName}
             onChange={(e) => setPharmacyName(e.target.value)}
           />
+
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="login-btn">
-            Login
-          </button>
 
-          {/* Back Button under Login */}
-          <button
-            type="button"
-            className="back-btn"
-            onClick={() => navigate("/loginRegister")}
-          >
-            ← Back
-          </button>
+          <div className="button-group">
+            <button type="submit" className="login-btn">Login</button>
+            <button type="button" className="back-btn" onClick={() => navigate("/loginRegister")}>←</button>
+          </div>
         </form>
       </div>
 

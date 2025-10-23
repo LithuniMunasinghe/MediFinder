@@ -70,6 +70,7 @@ body {
   font-size: clamp(1.5rem, 4vw, 3rem);
   max-width: 90%;
   margin: auto;
+  margin-top: 800px;
 }
 
 

@@ -157,23 +157,22 @@ const LoginRegister = () => {
           <a href="#">Forgot Your Password?</a>
           <button type="submit">Sign In</button>
           {/* Pharmacy Login Button */}
-<button
-  type="button"
-  style={{
-    marginTop: "15px",
-    padding: "10px 20px",
-    backgroundColor: "#2f7dc2ff",
-    color: "white",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    fontWeight: "bold",
-  }}
-  onClick={() => navigate("/pharmacyLogin")}
->
-  Pharmacy Login
-</button>
-
+            <button
+              type="button"
+              style={{
+                marginTop: "15px",
+                padding: "10px 20px",
+                backgroundColor: "#2f7dc2ff",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+              onClick={() => navigate("/pharmacyLogin")}
+            >
+              Pharmacy Login
+            </button>
         </form>
       </div>
 

@@ -63,9 +63,9 @@ body {
 --------------------------- */
 .dashboard-actions {
   display: flex;
-  justify-content: center; /* centers Add Medicine */
+  justify-content: right; /* centers Add Medicine */
   align-items: center;
-  margin: 8px 0;
+  margin: 8px 40px;
   padding: 0;
   padding-bottom: 20px;
 }
@@ -79,6 +79,7 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
+  width: 200px;
 }
 
 .dashboard-actions button:hover {
@@ -175,6 +176,7 @@ body {
 }
 
 .delete-btn {
+  margin-top: 5px;
   background-color: #e53935;
   color: white;
 }
