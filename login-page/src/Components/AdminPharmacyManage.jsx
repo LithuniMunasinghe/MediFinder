@@ -1,223 +1,135 @@
-import React, { useState, useEffect } from "react";
-import { Table, Button, Alert, Spinner, Modal, Form } from "react-bootstrap";
-import { FaStore, FaTrash, FaEdit, FaArrowLeft, FaPlus } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../css/adminPharmacy.css";
+import Swal from "sweetalert2";
+import { PHARMACY_API } from "../config";
 
-const PharmacyManagement = () => {
+const AdminPharmacyManage = () => {
   const [pharmacies, setPharmacies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [selectedPharmacy, setSelectedPharmacy] = useState(null);
-
   const [newPharmacy, setNewPharmacy] = useState({
     name: "",
-    address: "",
+    location: "",
     contact: "",
-    email: "",
   });
 
-  const navigate = useNavigate();
-
-  // Fetch pharmacies
+  // Load pharmacies
   useEffect(() => {
-    const fetchPharmacies = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("http://localhost:8080/pharmacies");
-        setPharmacies(response.data);
-      } catch (error) {
-        setError("There was an error fetching the pharmacies data.");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchPharmacies();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewPharmacy((prev) => ({ ...prev, [name]: value }));
+  const fetchPharmacies = async () => {
+    try {
+      const response = await axios.get(`${PHARMACY_API}/pharmacies`);
+      setPharmacies(response.data);
+    } catch (error) {
+      console.error("Error fetching pharmacies:", error);
+      Swal.fire("Error", "Cannot connect to pharmacy backend", "error");
+    }
   };
 
-  // Add Pharmacy
+  // Add pharmacy
   const handleAddPharmacy = async () => {
-    if (!newPharmacy.name || !newPharmacy.address || !newPharmacy.contact || !newPharmacy.email) {
-      alert("All fields are required!");
+    if (!newPharmacy.name || !newPharmacy.location || !newPharmacy.contact) {
+      Swal.fire("Error", "Please fill in all fields", "warning");
       return;
     }
     try {
-      const response = await axios.post("http://localhost:8080/pharmacies", newPharmacy);
-      setPharmacies([...pharmacies, response.data]);
-      setShowAddModal(false);
-      setNewPharmacy({ name: "", address: "", contact: "", email: "" });
+      await axios.post(`${PHARMACY_API}/pharmacies`, newPharmacy);
+      Swal.fire("Success", "Pharmacy added successfully!", "success");
+      setNewPharmacy({ name: "", location: "", contact: "" });
+      fetchPharmacies();
     } catch (error) {
-      console.error("Error adding pharmacy:", error);
+      Swal.fire("Error", "Failed to add pharmacy", "error");
     }
   };
 
-  // Open edit modal
-  const openEditModal = (pharmacy) => {
-    setSelectedPharmacy(pharmacy);
-    setNewPharmacy(pharmacy);
-    setShowEditModal(true);
-  };
-
-  // Update Pharmacy
-  const handleUpdatePharmacy = async () => {
+  // Delete pharmacy
+  const handleDelete = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:8080/pharmacies/${selectedPharmacy.id}`, newPharmacy);
-      setPharmacies((prev) =>
-        prev.map((ph) => (ph.id === selectedPharmacy.id ? response.data : ph))
-      );
-      setShowEditModal(false);
+      await axios.delete(`${PHARMACY_API}/pharmacies/${id}`);
+      Swal.fire("Deleted!", "Pharmacy deleted successfully", "success");
+      fetchPharmacies();
     } catch (error) {
-      console.error("Error updating pharmacy:", error);
-    }
-  };
-
-  // Delete Pharmacy
-  const handleDeletePharmacy = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/pharmacies/${id}`);
-      setPharmacies(pharmacies.filter((ph) => ph.id !== id));
-    } catch (error) {
-      console.error("Error deleting pharmacy:", error);
+      Swal.fire("Error", "Failed to delete pharmacy", "error");
     }
   };
 
   return (
-    <div className="pharmacy-wrapper">
-      <div className="header-buttons d-flex justify-content-between align-items-center mb-3">
-        <Button variant="outline-secondary" onClick={() => navigate("/Admin")}>
-          <FaArrowLeft /> Back to Home
-        </Button>
-        <Button variant="success" onClick={() => setShowAddModal(true)}>
-          <FaPlus /> Add Pharmacy
-        </Button>
+    <div className="container mt-4">
+      <h2 className="text-center mb-4">Manage Pharmacies</h2>
+
+      <div className="card p-3 shadow mb-4">
+        <h5>Add New Pharmacy</h5>
+        <input
+          type="text"
+          className="form-control mb-2"
+          placeholder="Pharmacy Name"
+          value={newPharmacy.name}
+          onChange={(e) =>
+            setNewPharmacy({ ...newPharmacy, name: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          className="form-control mb-2"
+          placeholder="Location"
+          value={newPharmacy.location}
+          onChange={(e) =>
+            setNewPharmacy({ ...newPharmacy, location: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          className="form-control mb-2"
+          placeholder="Contact Number"
+          value={newPharmacy.contact}
+          onChange={(e) =>
+            setNewPharmacy({ ...newPharmacy, contact: e.target.value })
+          }
+        />
+        <button className="btn btn-primary" onClick={handleAddPharmacy}>
+          Add Pharmacy
+        </button>
       </div>
 
-      <h2 className="mb-3">Pharmacy List</h2>
-
-      {error && <Alert variant="danger">{error}</Alert>}
-
-      {loading ? (
-        <div className="d-flex justify-content-center my-5">
-          <Spinner animation="border" variant="primary" />
-        </div>
-      ) : pharmacies.length === 0 ? (
-        <Alert variant="info">No pharmacies available at the moment.</Alert>
-      ) : (
-        <div className="table-responsive">
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Pharmacy</th>
-                <th>Address</th>
-                <th>Contact</th>
-                <th>Email</th>
-                <th>Actions</th>
+      <table className="table table-bordered table-striped shadow">
+        <thead className="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Contact</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {pharmacies.length === 0 ? (
+            <tr>
+              <td colSpan="5" className="text-center">
+                No pharmacies found.
+              </td>
+            </tr>
+          ) : (
+            pharmacies.map((p) => (
+              <tr key={p.id}>
+                <td>{p.id}</td>
+                <td>{p.name}</td>
+                <td>{p.location}</td>
+                <td>{p.contact}</td>
+                <td>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(p.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {pharmacies.map((pharmacy, index) => (
-                <tr key={pharmacy.id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    <FaStore className="text-success me-2" /> {pharmacy.name}
-                  </td>
-                  <td>{pharmacy.address}</td>
-                  <td>{pharmacy.contact}</td>
-                  <td>{pharmacy.email}</td>
-                  <td>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="me-2"
-                      onClick={() => openEditModal(pharmacy)}
-                    >
-                      <FaEdit />
-                    </Button>
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => handleDeletePharmacy(pharmacy.id)}
-                    >
-                      <FaTrash />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-      )}
-
-      {/* Add Pharmacy Modal */}
-      <Modal show={showAddModal} onHide={() => setShowAddModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Pharmacy</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            {["name", "address", "contact", "email"].map((field) => (
-              <Form.Group className="mb-3" key={field}>
-                <Form.Label>{field.charAt(0).toUpperCase() + field.slice(1)}</Form.Label>
-                <Form.Control
-                  type="text"
-                  name={field}
-                  value={newPharmacy[field]}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-            ))}
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowAddModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleAddPharmacy}>
-            Add Pharmacy
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Edit Pharmacy Modal */}
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Pharmacy</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            {["name", "address", "contact", "email"].map((field) => (
-              <Form.Group className="mb-3" key={field}>
-                <Form.Label>{field.charAt(0).toUpperCase() + field.slice(1)}</Form.Label>
-                <Form.Control
-                  type="text"
-                  name={field}
-                  value={newPharmacy[field]}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-            ))}
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleUpdatePharmacy}>
-            Update Pharmacy
-          </Button>
-        </Modal.Footer>
-      </Modal>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
 
-export default PharmacyManagement;
+export default AdminPharmacyManage;
