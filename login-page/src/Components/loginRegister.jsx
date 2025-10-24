@@ -154,7 +154,15 @@ const LoginRegister = () => {
           <h1>Sign In</h1>
           <input type="text" placeholder="Username" value={patientUsername} onChange={(e) => setUsername(e.target.value)} />
           <input type="password" placeholder="Password" value={patientPassword} onChange={(e) => setPassword(e.target.value)} />
-          <a href="#">Forgot Your Password?</a>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/forgotpassword");
+            }}
+          >
+            Forgot Your Password?
+          </a>
           <button type="submit">Sign In</button>
           {/* Pharmacy Login Button */}
             <button

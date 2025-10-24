@@ -54,7 +54,7 @@ public class PatientController {
     }
 
     // Verify if a user exists by username and email
-    @PostMapping("/my-app/verifyUser")
+    @PostMapping("/verifyUser")
     public ResponseEntity<?> verifyUser(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String email = request.get("email");
@@ -70,7 +70,7 @@ public class PatientController {
     }
 
     // Reset password if user verified
-    @PutMapping("/my-app/resetPassword")
+    @PutMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
         String username = request.get("username");
         String email = request.get("email");

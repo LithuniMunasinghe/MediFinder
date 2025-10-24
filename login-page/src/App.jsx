@@ -20,6 +20,7 @@ import LocationPage from "./Components/location";
 import PharmacyLogin from "./Components/PharmacyLogin";
 import PharmacyDashboard from "./Components/PharmacyDashboard";
 import AdminPharmacyManage from "./Components/AdminPharmacyManage";
+import ForgotPassword from "./Components/ForgotPassword";
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/pharmacyLogin" element={<PharmacyLogin />} />
         <Route path="/pharmacyDashboard" element={<PharmacyDashboard />} />
         <Route path="/AdminPharmacyManage" element={<AdminPharmacyManage />} />
+        <Route path="/forgotPassword" element={<ForgotPassword/>}/>
       </Routes>
     </Router>
   );
