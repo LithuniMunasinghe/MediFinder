@@ -61,4 +61,13 @@ public class PatientService {
     public void deletePatient(int id) {
         patientRepository.deleteById(id);
     }
+
+
+    public Patient findByUserNameAndEmail(String userName, String email) {
+        return patientRepository.findByUserNameAndEmail(userName, email);
+    }
+
+    public void savePatient(Patient patient) {
+        patientRepository.save(patient);
+    }
 }

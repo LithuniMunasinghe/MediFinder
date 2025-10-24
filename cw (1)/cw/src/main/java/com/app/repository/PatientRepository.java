@@ -16,4 +16,11 @@ public interface PatientRepository extends JpaRepository<Patient,Integer> {
 
 
     Patient findByUserNameAndPassword(String userName, String password);
+
+
+//  For forgot password verification
+Patient findByUserNameAndEmail(String userName, String email);
 }
+
+
+
