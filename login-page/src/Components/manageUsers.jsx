@@ -3,7 +3,8 @@ import { Button, Table, Alert, Spinner, Form, Modal } from "react-bootstrap";
 import { FaUserPlus, FaEdit, FaTrash, FaArrowLeft } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../css/manageUsers.css"; // ✅ Link CSS
+import Swal from "sweetalert2";
+import "../css/manageUsers.css"; // Link CSS
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -52,8 +53,16 @@ const ManageUsers = () => {
       setUsers([...users, response.data]);
       resetForm();
       setShowAddForm(false);
+
+      Swal.fire({
+        icon: "success",
+        title: "User Added Successfully!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.error("Error adding user:", error);
+      Swal.fire("Error!", "Failed to add user.", "error");
     }
   };
 
@@ -64,21 +73,51 @@ const ManageUsers = () => {
       setUsers(users.map((user) => (user.id === currentUserId ? { ...user, ...formData } : user)));
       resetForm();
       setShowAddForm(false);
+
+      Swal.fire({
+        icon: "success",
+        title: "User Updated Successfully!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } catch (error) {
       console.error("Error updating user:", error);
+      Swal.fire("Error!", "Failed to update user.", "error");
     }
   };
 
-  // Delete user
+  // Delete user with confirmation
   const handleDeleteUser = async (id) => {
-    try {
-      await axios.delete(`http://localhost:8080/my-app/patients/${id}`);
-      setUsers(users.filter((user) => user.id !== id));
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:8080/my-app/patients/${id}`);
+          setUsers(users.filter((user) => user.id !== id));
+
+          Swal.fire({
+            icon: "success",
+            title: "Deleted!",
+            text: "User has been deleted.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          Swal.fire("Error!", "Failed to delete user.", "error");
+        }
+      }
+    });
   };
 
+  // Reset form
   const resetForm = () => {
     setFormData({
       name: "",
@@ -100,7 +139,7 @@ const ManageUsers = () => {
         <Button variant="outline-primary" onClick={() => navigate("/Admin")}>
           <FaArrowLeft /> Back to Home
         </Button>
-        <Button variant="outline-success" onClick={() => setShowAddForm(true)}>
+        <Button className="add-btn" variant="outline-success" onClick={() => setShowAddForm(true)}>
           <FaUserPlus /> Add User
         </Button>
       </div>
@@ -145,14 +184,15 @@ const ManageUsers = () => {
                       setCurrentUserId(user.id);
                       setShowAddForm(true);
                     }}
+                    className="edit-btn"
                   >
                     <FaEdit /> Edit
-                  </Button>
+                  </Button>{" "}
                   <Button
                     variant="outline-danger"
                     size="sm"
                     onClick={() => handleDeleteUser(user.id)}
-                    className="ms-2"
+                    className="delete-btn"
                   >
                     <FaTrash /> Delete
                   </Button>
