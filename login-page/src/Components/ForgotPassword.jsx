@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "../css/loginRegister.css"; // same CSS as your login/register
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import "../css/pharmacyLogin.css"; // same style as PharmacyLogin
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -11,6 +11,11 @@ const ForgotPassword = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [isActive, setIsActive] = useState(false);
+
+  const toggleForm = () => {
+    setIsActive((prev) => !prev);
+  };
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -54,46 +59,59 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="container active" id="container">
+    <div className={`container ${isActive ? "active" : ""}`} id="container">
+      {/* Forgot Password Form */}
       <div className="form-container sign-in visible">
         <form onSubmit={handleResetPassword}>
           <h1>Forgot Password</h1>
+
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Email Address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+
           <input
             type="password"
             placeholder="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
           />
-          <button type="submit">Reset Password</button>
-          <button
-            type="button"
-            style={{
-              marginTop: "15px",
-              padding: "10px 20px",
-              backgroundColor: "#2f7dc2ff",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              cursor: "pointer",
-              fontWeight: "bold",
-            }}
-            onClick={() => navigate("/loginRegister")}
-          >
-            Back to Login
-          </button>
+
+          <div className="button-group">
+            <button type="submit" className="login-btn">Reset Password</button>
+            <button
+              type="button"
+              className="back-btn"
+              onClick={() => navigate("/loginRegister")}
+            >
+              ←
+            </button>
+          </div>
         </form>
+      </div>
+
+      {/* Toggle Panel */}
+      <div className="toggle-container">
+        <div className="toggle">
+          <div className="toggle-panel toggle-left">
+            <h1>Reset Your Password</h1>
+            <p>Enter your account details to create a new password.</p>
+            <button onClick={toggleForm}>Reset</button>
+          </div>
+          <div className="toggle-panel toggle-right">
+            <h1>MEDI-FINDER</h1>
+            <p>Secure password recovery for registered users.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

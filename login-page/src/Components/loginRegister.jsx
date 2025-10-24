@@ -160,6 +160,7 @@ const LoginRegister = () => {
               e.preventDefault();
               navigate("/forgotpassword");
             }}
+            className="forgetPass-link"
           >
             Forgot Your Password?
           </a>
