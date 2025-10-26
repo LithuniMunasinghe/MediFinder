@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import "../css/book.css";
 import { Button } from "react-bootstrap";
 
@@ -20,7 +21,11 @@ const AppointmentPage = () => {
       })
       .catch((error) => {
         console.error("Error fetching appointments:", error);
-        alert("Error fetching appointments. Please try again.");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Error fetching appointments. Please try again.",
+        });
       });
   }, []);
 
@@ -35,10 +40,18 @@ const AppointmentPage = () => {
           (appointment) => appointment.appointmentId !== appointmentId
         )
       );
-      alert("Appointment cancelled successfully!");
+      Swal.fire({
+        icon: "success",
+        title: "Cancelled!",
+        text: "Appointment cancelled successfully!",
+      });
     } catch (error) {
       console.error("Error cancelling appointment:", error);
-      alert("Error cancelling appointment. Please try again.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Error cancelling appointment. Please try again.",
+      });
     }
   };
 
@@ -46,7 +59,10 @@ const AppointmentPage = () => {
     <div className="appointment-wrapper">
       <div className="appointment-card">
         <div className="appointment-header">
-          <h2>Appointments for Dr. {doctorName}</h2>
+          <h2>
+            Appointments for Dr.{" "}
+            {doctorName || (appointments[0] && appointments[0].doctorName)}
+          </h2>
         </div>
 
         <div className="button-container">
@@ -77,14 +93,27 @@ const AppointmentPage = () => {
                 <td>{appointment.patientName}</td>
                 <td>{appointment.doctorName}</td>
                 <td>{appointment.speciality}</td>
-                <td>{appointment.contactNumber}</td>
+                <td>{appointment.contact}</td>
                 <td>{appointment.appointmentDate}</td>
                 <td>{appointment.doctorFee}</td>
                 <td>
                   <Button
                     variant="outline-danger"
+                    className="cancel-btn"
                     onClick={() =>
-                      handleCancelAppointment(appointment.appointmentId)
+                      Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, cancel it!",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          handleCancelAppointment(appointment.appointmentId);
+                        }
+                      })
                     }
                     size="sm"
                   >
