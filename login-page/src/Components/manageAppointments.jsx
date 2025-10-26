@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import "../css/book.css";
 import { Button } from "react-bootstrap";
+import { FaArrowLeft } from "react-icons/fa"; // added icon
 
 const AppointmentPage = () => {
   const location = useLocation();
@@ -58,20 +59,24 @@ const AppointmentPage = () => {
   return (
     <div className="appointment-wrapper">
       <div className="appointment-card">
-        <div className="appointment-header">
-          <h2>
-            Appointments for Dr.{" "}
-            {doctorName || (appointments[0] && appointments[0].doctorName)}
-          </h2>
-        </div>
-
-        <div className="button-container">
+        {/* Header Buttons */}
+        <div className="header-buttons" style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+          <Button variant="outline-primary" onClick={() => navigate("/Admin")}>
+            <FaArrowLeft /> Back to Home
+          </Button>
           <Button
             variant="outline-primary"
             onClick={() => navigate("/DoctorView")}
           >
             Book Appointments
           </Button>
+        </div>
+
+        <div className="appointment-header">
+          <h2>
+            Appointments for Dr.{" "}
+            {doctorName || (appointments[0] && appointments[0].doctorName)}
+          </h2>
         </div>
 
         <h3 className="table-title">All Appointments</h3>

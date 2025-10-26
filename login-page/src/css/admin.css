@@ -83,7 +83,7 @@
 .manage-box .doctor { color: green; }
 .manage-box .users { color: blue; }
 .manage-box .appointments { color: orange; }
-.manage-box .pharmacy { color: rgb(0, 204, 255); }
+.manage-box .pharmacy { color: rgb(6, 67, 82); }
 
 /* Logout Button */
 .logout-btn {
